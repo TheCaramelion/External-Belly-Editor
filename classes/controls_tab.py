@@ -95,7 +95,6 @@ class ControlsTab(QWidget):
         self.addon_list_widget.clear()
         for addon in addons:
             self.addon_list_widget.addItem(addon)
-            # Remove addon from mode_addons_combobox if it exists
             if addon in MODE_ADDONS_OPTIONS:
                 self.mode_addons_combobox.removeItem(self.mode_addons_combobox.findText(addon))
 

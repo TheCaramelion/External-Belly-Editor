@@ -3,8 +3,10 @@ import json
 import os
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QFileDialog, QMessageBox, QLabel, QListWidget,
-    QListWidgetItem, QTabWidget, QGroupBox, QTextEdit,
+    QListWidgetItem, QTabWidget, QGroupBox, QTextEdit, QMainWindow, QAction, qApp
 )
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QDesktopServices
 from classes.controls_tab import ControlsTab
 from classes.descriptions_tab import DescriptionsTab
 from classes.sounds_tab import SoundsTab
@@ -12,16 +14,49 @@ from classes.visuals_tab import VisualsTab
 from classes.interactions_tab import InteractionsTab
 from classes.liquids_tab import LiquidsTab
 
-class VRDBEditor(QWidget):
+class VRDBEditor(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
         self.setGeometry(100, 100, 800, 600)
-        self.setWindowTitle('VRDB Editor')
+        self.setWindowTitle('External Belly Editor')
+        
+        menubar = self.menuBar()
+        
+        # File menu
+        file_menu = menubar.addMenu('&File')
+        
+        open_action = QAction('&Open', self)
+        open_action.setShortcut('Ctrl+O')
+        open_action.setStatusTip('Open Bellies')
+        open_action.triggered.connect(self.load_vrdb)
+        file_menu.addAction(open_action)
 
-        self.layout = QVBoxLayout(self)
+        save_action = QAction('&Save', self)
+        save_action.setShortcut('Ctrl+S')
+        save_action.setStatusTip('Save Bellies')
+        save_action.triggered.connect(self.save_vrdb)
+        file_menu.addAction(save_action)
+
+        file_menu.addSeparator()
+
+        exit_action = QAction('&Exit', self)
+        exit_action.setShortcut('Ctrl+Q')
+        exit_action.setStatusTip('Exit application')
+        exit_action.triggered.connect(qApp.quit)
+        file_menu.addAction(exit_action)
+        
+        # Help menu
+        help_menu = menubar.addMenu('&Help')
+        github_action = QAction('&GitHub', self)
+        github_action.setStatusTip('Vsit GitHub Repository')
+        github_action.triggered.connect(self.open_github_repo)
+        help_menu.addAction(github_action)
+        
+
+        self.layout = QVBoxLayout()
 
         # Create a title label (hidden initially)
         self.title_label = QLabel('File Title', self)
@@ -39,14 +74,13 @@ class VRDBEditor(QWidget):
         self.belly_list = QListWidget()
         self.belly_list.setMaximumWidth(150)  # Adjusted width
         self.belly_list.itemSelectionChanged.connect(self.on_belly_selected)
-        self.belly_list.itemDoubleClicked.connect(self.on_belly_double_clicked)  # Connect double click
         self.left_layout.addWidget(self.belly_list)
 
-        self.load_button = QPushButton('Load VRDB', self)
+        self.load_button = QPushButton('Load Bellies', self)
         self.load_button.clicked.connect(self.load_vrdb)
         self.left_layout.addWidget(self.load_button)
 
-        self.save_button = QPushButton('Save VRDB', self)
+        self.save_button = QPushButton('Save Bellies', self)
         self.save_button.clicked.connect(self.save_vrdb)
         self.save_button.setEnabled(False)  # Initially disabled
         self.left_layout.addWidget(self.save_button)
@@ -89,12 +123,12 @@ class VRDBEditor(QWidget):
         self.liquids_tab = LiquidsTab()
         self.right_tab_widget.addTab(self.liquids_tab, 'Liquids')
 
-        # 
-
         self.horizontal_layout.addWidget(self.right_tab_widget)
         self.layout.addLayout(self.horizontal_layout)
 
-        self.setLayout(self.layout)
+        central_widget = QWidget()
+        central_widget.setLayout(self.layout)
+        self.setCentralWidget(central_widget)
 
     def load_vrdb(self):
         file_dialog = QFileDialog(self)
@@ -137,8 +171,7 @@ class VRDBEditor(QWidget):
             # Update controls tab
             self.controls_tab.set_belly_data(belly_data)
 
-            # Update descriptions tab
-            self.descriptions_tab.set_description_data(belly_data)  # Use the correct method name
+            self.descriptions_tab.set_description_data(belly_data)
 
     def save_vrdb(self):
         if not hasattr(self, 'current_file_path'):
@@ -153,10 +186,12 @@ class VRDBEditor(QWidget):
                 if item.isSelected():
                     belly_data['name'] = self.controls_tab.get_belly_data()['name']
                     belly_data['mode'] = self.controls_tab.get_belly_data()['mode']
+                    belly_data['item_mode'] = self.controls_tab.get_belly_data()['item_mode']
                     belly_data['addons'] = self.controls_tab.get_belly_data()['addons']
                     belly_data['desc'] = self.descriptions_tab.get_description_data()['desc']
                     belly_data['absorbed_desc'] = self.descriptions_tab.get_description_data()['absorbed_desc']
                     belly_data['vore_verb'] = self.descriptions_tab.get_description_data()['vore_verb']
+                    belly_data['release_verb'] = self.descriptions_tab.get_description_data()['release_verb']
                 data.append(belly_data)
             
             if not data:
@@ -168,10 +203,10 @@ class VRDBEditor(QWidget):
                 QMessageBox.information(self, 'Success', 'VRDB file saved successfully.')
         except Exception as e:
             QMessageBox.critical(self, 'Error', f'Failed to save VRDB file:\n{str(e)}')
-
-    def on_belly_double_clicked(self, item):
-        # Implement what happens when a belly item is double-clicked
-        pass
+            
+    def open_github_repo(self):
+        url = 'https://github.com/TheCaramelion/External-Belly-Editor'
+        QDesktopServices.openUrl(QUrl(url))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
