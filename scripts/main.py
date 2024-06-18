@@ -18,11 +18,18 @@ class VRDBEditor(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
+        self.belly_data_buffer = []
+        self.current_file_data = None
+        self.current_file_path = None
 
     def initUI(self):
         self.setGeometry(100, 100, 800, 600)
         self.setWindowTitle('External Belly Editor')
         
+        self.create_menu()
+        self.create_layout()
+
+    def create_menu(self):
         menubar = self.menuBar()
         
         # File menu
@@ -51,11 +58,11 @@ class VRDBEditor(QMainWindow):
         # Help menu
         help_menu = menubar.addMenu('&Help')
         github_action = QAction('&GitHub', self)
-        github_action.setStatusTip('Vsit GitHub Repository')
+        github_action.setStatusTip('Visit GitHub Repository')
         github_action.triggered.connect(self.open_github_repo)
         help_menu.addAction(github_action)
-        
 
+    def create_layout(self):
         self.layout = QVBoxLayout()
 
         # Create a title label (hidden initially)
@@ -140,14 +147,19 @@ class VRDBEditor(QMainWindow):
             try:
                 # Set the title label text
                 title = os.path.basename(file_path)
-                title = title.split('_')[0]  # Get the part of the filename before '_'
+                title = title.split('_')[0]
                 self.title_label.setText(title)
-                self.title_label.setVisible(True)  # Show the title label
+                self.title_label.setVisible(True)
 
                 with open(file_path, 'r', encoding='utf-8') as f:
-                    self.current_file_path = file_path  # Store the current file path
-                    data = json.load(f)
-                    self.display_bellies(data)
+                    self.current_file_path = file_path
+                    self.current_file_data = json.load(f)
+                    self.belly_data_buffer = self.current_file_data.copy()
+                    self.display_bellies(self.belly_data_buffer)
+                    
+                    if self.belly_list.count() > 0:
+                        self.belly_list.setCurrentRow(0)
+                    
             except Exception as e:
                 QMessageBox.critical(self, 'Error', f'Failed to load VRDB file:\n{str(e)}')
 
@@ -165,44 +177,54 @@ class VRDBEditor(QMainWindow):
             selected_item = selected_items[0]
             belly_data = selected_item.belly_data
             self.json_scroll_area.setPlainText(json.dumps(belly_data, indent=4))
-            self.json_scroll_area.setReadOnly(False)  # Allow editing
-            self.save_button.setEnabled(True)  # Enable the save button
+            self.json_scroll_area.setReadOnly(False)
+            self.save_button.setEnabled(True)
 
-            # Update controls tab
+            # Update tabs with the selected belly data
             self.controls_tab.set_belly_data(belly_data)
-
             self.descriptions_tab.set_description_data(belly_data)
 
-    def save_vrdb(self):
-        if not hasattr(self, 'current_file_path'):
-            print("Current file path is not set.")
-            return
-        
-        try:
-            data = []
-            for index in range(self.belly_list.count()):
-                item = self.belly_list.item(index)
-                belly_data = item.belly_data.copy()
-                if item.isSelected():
-                    belly_data['name'] = self.controls_tab.get_belly_data()['name']
-                    belly_data['mode'] = self.controls_tab.get_belly_data()['mode']
-                    belly_data['item_mode'] = self.controls_tab.get_belly_data()['item_mode']
-                    belly_data['addons'] = self.controls_tab.get_belly_data()['addons']
-                    belly_data['desc'] = self.descriptions_tab.get_description_data()['desc']
-                    belly_data['absorbed_desc'] = self.descriptions_tab.get_description_data()['absorbed_desc']
-                    belly_data['vore_verb'] = self.descriptions_tab.get_description_data()['vore_verb']
-                    belly_data['release_verb'] = self.descriptions_tab.get_description_data()['release_verb']
-                data.append(belly_data)
-            
-            if not data:
-                QMessageBox.warning(self, 'Warning', 'No belly data to save.')
-                return
+    def update_belly_data_from_tabs(self):
+        selected_items = self.belly_list.selectedItems()
+        if selected_items:
+            selected_item = selected_items[0]
+            belly_data = selected_item.belly_data
 
+            belly_data.update(self.controls_tab.get_belly_data())
+            belly_data.update(self.descriptions_tab.get_description_data())
+
+            for i, item in enumerate(self.belly_data_buffer):
+                if item.get('name') == belly_data.get('name'):
+                    self.belly_data_buffer[i] = belly_data
+                    break
+            else:
+                self.belly_data_buffer.append(belly_data)
+
+            self.json_scroll_area.setPlainText(json.dumps(belly_data, indent=4))
+            
+            self.refresh_belly_list()
+
+    def refresh_belly_list(self):
+        self.belly_list.clear()
+        for belly in self.belly_data_buffer:
+            belly_name = belly.get('name', 'Unnamed Belly')
+            item = QListWidgetItem(belly_name)
+            item.belly_data = belly
+            self.belly_list.addItem(item)
+
+    def save_vrdb(self):
+        if not self.current_file_path:
+            QMessageBox.critical(self, 'Error', 'Current file path is not set')
+            return
+
+        self.update_belly_data_from_tabs() 
+
+        try:
             with open(self.current_file_path, 'w', encoding='utf-8') as f:
-                json.dump(data, f, indent=4)
-                QMessageBox.information(self, 'Success', 'VRDB file saved successfully.')
+                json.dump(self.belly_data_buffer, f, indent=4)
+                QMessageBox.information(self, 'Success', 'Bellies saved successfully.')
         except Exception as e:
-            QMessageBox.critical(self, 'Error', f'Failed to save VRDB file:\n{str(e)}')
+            QMessageBox.critical(self, 'Error', f'Failed to save bellies:\n{str(e)}')
             
     def open_github_repo(self):
         url = 'https://github.com/TheCaramelion/External-Belly-Editor'
