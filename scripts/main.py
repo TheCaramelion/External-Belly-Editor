@@ -305,7 +305,7 @@ class VRDBEditor(QMainWindow):
             
             self.refresh_belly_list()
 
-    def refresh_belly_list(self):
+    def refresh_belly_list(self): 
         self.belly_list.clear()
         for belly in self.belly_data_buffer:
             belly_name = belly.get('name', 'Unnamed Belly')
