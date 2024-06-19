@@ -1,0 +1,23 @@
+name: Update PR Description
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  update-pr-description:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Update PR Description
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          PR_DESCRIPTION="## Description\n\nPlease replace this with a brief description of what your PR does.\n\n## Changelog Entry\n\n- Added feature X.\n- Fixed bug Y.\n- Improved performance of Z."
+          curl -sSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Content-Type: application/json" \
+            -X PATCH -d "{\"body\": \"$PR_DESCRIPTION\"}" \
+            "${{ github.api_url }}/repos/${{ github.repository }}/pulls/$PR_NUMBER" \
+            > /dev/null
