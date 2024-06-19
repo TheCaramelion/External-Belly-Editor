@@ -1,9 +1,10 @@
 import sys
 import json
 import os
+import copy
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QFileDialog, QMessageBox, QLabel, QListWidget,
-    QListWidgetItem, QTabWidget, QGroupBox, QTextEdit, QMainWindow, QAction, qApp
+    QListWidgetItem, QTabWidget, QGroupBox, QTextEdit, QMainWindow, QAction, qApp, QInputDialog
 )
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
@@ -14,6 +15,12 @@ from classes.visuals_tab import VisualsTab
 from classes.interactions_tab import InteractionsTab
 from classes.liquids_tab import LiquidsTab
 
+def load_default_belly(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        return json.load(file)
+    
+default_belly_path = 'default/belly.json'
+
 class VRDBEditor(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -23,7 +30,7 @@ class VRDBEditor(QMainWindow):
         self.current_file_path = None
 
     def initUI(self):
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(100, 100, 1000, 600)
         self.setWindowTitle('External Belly Editor')
         
         self.create_menu()
@@ -34,6 +41,12 @@ class VRDBEditor(QMainWindow):
         
         # File menu
         file_menu = menubar.addMenu('&File')
+        
+        new_file = QAction('&New File', self)
+        new_file.setShortcut('Ctrl+N')
+        new_file.setStatusTip('Create a new set of bellies')
+        new_file.triggered.connect(self.create_new_file)
+        file_menu.addAction(new_file)
         
         open_action = QAction('&Open', self)
         open_action.setShortcut('Ctrl+O')
@@ -77,26 +90,48 @@ class VRDBEditor(QMainWindow):
         # Left side: Belly List
         self.left_group_box = QGroupBox('Belly List', self)
         self.left_layout = QVBoxLayout(self.left_group_box)
+        
+        self.minWidth = 100
+        self.maxWidth = 200
 
         self.belly_list = QListWidget()
-        self.belly_list.setMaximumWidth(150)  # Adjusted width
+        self.belly_list.setMinimumWidth(self.minWidth)
+        self.belly_list.setMaximumWidth(self.maxWidth)
         self.belly_list.itemSelectionChanged.connect(self.on_belly_selected)
         self.left_layout.addWidget(self.belly_list)
 
         self.load_button = QPushButton('Load Bellies', self)
+        self.load_button.setMinimumWidth(self.minWidth)
+        self.load_button.setMaximumWidth(self.maxWidth)
         self.load_button.clicked.connect(self.load_vrdb)
         self.left_layout.addWidget(self.load_button)
 
         self.save_button = QPushButton('Save Bellies', self)
+        self.save_button.setMinimumWidth(self.minWidth)
+        self.save_button.setMaximumWidth(self.maxWidth)
         self.save_button.clicked.connect(self.save_vrdb)
         self.save_button.setEnabled(False)  # Initially disabled
         self.left_layout.addWidget(self.save_button)
+        
+        self.new_belly_button = QPushButton('Create Belly', self)
+        self.new_belly_button.setMinimumWidth(self.minWidth)
+        self.new_belly_button.setMaximumWidth(self.maxWidth)
+        self.new_belly_button.clicked.connect(self.create_new_belly)
+        self.new_belly_button.setEnabled(False)    # Initially disabled
+        self.left_layout.addWidget(self.new_belly_button)
+        
+        self.delete_belly_button = QPushButton('Delete Belly', self)
+        self.delete_belly_button.setMinimumWidth(self.minWidth)
+        self.delete_belly_button.setMaximumWidth(self.maxWidth)
+        self.delete_belly_button.clicked.connect(self.confirm_delete_belly)
+        self.delete_belly_button.setEnabled(False)  # Initially disabled
+        self.left_layout.addWidget(self.delete_belly_button)
 
         self.horizontal_layout.addWidget(self.left_group_box)
 
         # Right side: Tab Widget
         self.right_tab_widget = QTabWidget()
-        self.right_tab_widget.setMinimumWidth(600)  # Adjusted minimum width
+        self.right_tab_widget.setMinimumWidth(800)
 
         # JSON tab
         self.json_tab = QWidget()
@@ -136,6 +171,38 @@ class VRDBEditor(QMainWindow):
         central_widget = QWidget()
         central_widget.setLayout(self.layout)
         self.setCentralWidget(central_widget)
+        
+        self.enable_tabs(False)
+        
+    def enable_tabs(self, enabled):
+        for index in range(self.right_tab_widget.count()):
+            self.right_tab_widget.setTabEnabled(index, enabled)
+            
+    def create_new_file(self):
+        file_dialog = QFileDialog(self)
+        file_dialog.setNameFilter("VRDB files (*.vrdb)")
+        file_dialog.setViewMode(QFileDialog.Detail)
+        file_path, _ = file_dialog.getSaveFileName(self, "Create New VRDB File", "", "VRDB files (*.vrdb)")
+        
+        if file_path:
+            try:
+                default_belly = load_default_belly(default_belly_path)
+                self.belly_data_buffer = [default_belly]
+                self.current_file_data = self.belly_data_buffer.copy()
+                self.current_file_path = file_path
+                
+                self.title_label.setText(os.path.basename(file_path))
+                self.title_label.setVisible(True)
+                self.display_bellies(self.belly_data_buffer)
+                self.belly_list.setCurrentRow(0)
+                self.enable_tabs(True)
+                self.new_belly_button.setEnabled(True)
+                self.save_button.setEnabled(True)
+                self.delete_belly_button.setEnabled(True)
+                self.right_tab_widget.setCurrentIndex(1)
+                
+            except Exception as e:
+                QMessageBox.critical(self, 'Error', f'Failed to create new VRDB file:\n{str(e)}')
 
     def load_vrdb(self):
         file_dialog = QFileDialog(self)
@@ -159,9 +226,43 @@ class VRDBEditor(QMainWindow):
                     
                     if self.belly_list.count() > 0:
                         self.belly_list.setCurrentRow(0)
+                        
+                    self.enable_tabs(True)
+                    self.new_belly_button.setEnabled(True)
+                    self.delete_belly_button.setEnabled(True)
+                    self.right_tab_widget.setCurrentIndex(1)
                     
             except Exception as e:
                 QMessageBox.critical(self, 'Error', f'Failed to load VRDB file:\n{str(e)}')
+                
+    def create_new_belly(self):
+        belly_name, ok = QInputDialog.getText(self, 'New Belly', 'Enter a name for the new belly')
+        
+        if ok and belly_name:
+            new_belly = copy.deepcopy(load_default_belly(default_belly_path))
+            new_belly['name'] = belly_name
+            
+            self.belly_data_buffer.append(new_belly)
+            self.refresh_belly_list()
+            
+            self.belly_list.setCurrentRow(len(self.belly_data_buffer)-1)
+
+    def confirm_delete_belly(self):
+        selected_items = self.belly_list.selectedItems()
+        if selected_items:
+            selected_item = selected_items[0]
+            reply = QMessageBox.question(self, 'Confirm Delete',
+                                        f"Are you sure you want to delete belly '{selected_item.belly_data['name']}'?",
+                                        QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                self.delete_belly()
+
+    def delete_belly(self):
+        selected_items = self.belly_list.selectedItems()
+        if selected_items:
+            selected_item = selected_items[0]
+            self.belly_data_buffer.remove(selected_item.belly_data)
+            self.refresh_belly_list()
 
     def display_bellies(self, data):
         self.belly_list.clear()

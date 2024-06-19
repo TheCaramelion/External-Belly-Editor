@@ -1,0 +1,319 @@
+{
+    "name": "Stomach",
+    "desc": "It's a belly! You're in it!",
+    "absorbed_desc": null,
+    "vore_verb": "ingest",
+    "release_verb": "expels",
+    "mode": "Hold",
+    "addons": [],
+    "item_mode": "Digest (Food Only)",
+    "message_mode": 0,
+    "struggle_messages_outside": [
+        "%pred's %belly wobbles with a squirming meal.",
+        "%pred's %belly jostles with movement.",
+        "%pred's %belly briefly swells outward as someone pushes from inside.",
+        "%pred's %belly fidgets with a trapped victim.",
+        "%pred's %belly jiggles with motion from inside.",
+        "%pred's %belly sloshes around.",
+        "%pred's %belly gushes softly.",
+        "%pred's %belly lets out a wet squelch."
+    ],
+    "struggle_messages_inside": [
+        "Your useless squirming only causes %pred's slimy %belly to squelch over your body.",
+        "Your struggles only cause %pred's %belly to gush softly around you.",
+        "Your movement only causes %pred's %belly to slosh around you.",
+        "Your motion causes %pred's %belly to jiggle.",
+        "You fidget around inside of %pred's %belly.",
+        "You shove against the walls of %pred's %belly, making it briefly swell outward.",
+        "You jostle %pred's %belly with movement.",
+        "You squirm inside of %pred's %belly, making it wobble around."
+    ],
+    "absorbed_struggle_messages_outside": [
+        "%pred's %belly wobbles, seemingly on its own.",
+        "%pred's %belly jiggles without apparent cause.",
+        "%pred's %belly seems to shake for a second without an obvious reason."
+    ],
+    "absorbed_struggle_messages_inside": [
+        "You try and resist %pred's %belly, but only cause it to jiggle slightly.",
+        "Your fruitless mental struggles only shift %pred's %belly a tiny bit.",
+        "You can't make any progress freeing yourself from %pred's %belly."
+    ],
+    "escape_attempt_messages_owner": [
+        "%prey is attempting to free themselves from your %belly!"
+    ],
+    "escape_attempt_messages_prey": [
+        "You start to climb out of %pred's %belly."
+    ],
+    "escape_messages_owner": [
+        "%prey climbs out of your %belly!"
+    ],
+    "escape_messages_prey": [
+        "You climb out of %pred's %belly."
+    ],
+    "escape_messages_outside": [
+        "%prey climbs out of %pred's %belly!"
+    ],
+    "escape_item_messages_owner": [
+        "%item suddenly slips out of your %belly!"
+    ],
+    "escape_item_messages_prey": [
+        "Your struggles successfully cause %pred to squeeze your %item out of their %belly."
+    ],
+    "escape_item_messages_outside": [
+        "%item suddenly slips out of %pred's %belly!"
+    ],
+    "escape_fail_messages_owner": [
+        "%prey's attempt to escape from your %belly has failed!"
+    ],
+    "escape_fail_messages_prey": [
+        "Your attempt to escape %pred's %belly has failed!"
+    ],
+    "escape_attempt_absorbed_messages_owner": [
+        "%prey is attempting to free themselves from your %belly!"
+    ],
+    "escape_attempt_absorbed_messages_prey": [
+        "You try to force yourself out of %pred's %belly."
+    ],
+    "escape_absorbed_messages_owner": [
+        "%prey forces themselves free of your %belly!"
+    ],
+    "escape_absorbed_messages_prey": [
+        "You manage to free yourself from %pred's %belly."
+    ],
+    "escape_absorbed_messages_outside": [
+        "%prey climbs out of %pred's %belly!"
+    ],
+    "escape_fail_absorbed_messages_owner": [
+        "%prey's attempt to escape form your %belly has failed!"
+    ],
+    "escape_fail_absorbed_messages_prey": [
+        "Before you manage to reach freedom, you feel yourself getting dragged back into %pred's %belly!"
+    ],
+    "primary_transfer_messages_owner": [
+        "%prey slid into your %dest due to their struggling inside your %belly!"
+    ],
+    "primary_transfer_messages_prey": [
+        "Your attempt to escape %pred's %belly has failed and your struggles only results in you sliding into %pred's %dest!"
+    ],
+    "secondary_transfer_messages_owner": [
+        "%prey slid into your %dest due to their struggling inside your %belly!"
+    ],
+    "secondary_transfer_messages_prey": [
+        "Your attempt to escape %pred's %belly has failed and your struggles only results in you sliding into %pred's %dest!"
+    ],
+    "primary_autotransfer_messages_owner": [
+        "%prey moves along into your %dest!"
+    ],
+    "primary_autotransfer_messages_prey": [
+        "%pred's %belly moves you along into their %dest!"
+    ],
+    "secondary_autotransfer_messages_owner": [
+        "%prey moves along into your %dest!"
+    ],
+    "secondary_autotransfer_messages_prey": [
+        "%pred's %belly moves you along into their %dest!"
+    ],
+    "digest_chance_messages_owner": [
+        "You feel your %belly beginning to become active!"
+    ],
+    "digest_chance_messages_prey": [
+        "In response to your struggling, %pred's %belly begins to get more active..."
+    ],
+    "absorb_chance_messages_owner": [
+        "You feel your %belly start to cling onto its contents..."
+    ],
+    "absorb_chance_messages_prey": [
+        "In response to your struggling, %pred's %belly begins to cling more tightly..."
+    ],
+    "digest_messages_owner": [
+        "You feel %prey's body succumb to your digestive system, which breaks it apart into soft slurry.",
+        "You hear a lewd glorp as your %belly muscles grind %prey into a warm pulp.",
+        "Your %belly lets out a rumble as it melts %prey into sludge.",
+        "You feel a soft gurgle as %prey's body loses form in your %belly. They're nothing but a soft mass of churning slop now.",
+        "Your %belly begins gushing %prey's remains through your system, adding some extra weight to your thighs.",
+        "Your %belly begins gushing %prey's remains through your system, adding some extra weight to your rump.",
+        "Your %belly begins gushing %prey's remains through your system, adding some extra weight to your belly.",
+        "Your %belly groans as %prey falls apart into a thick soup. You can feel their remains soon flowing deeper into your body to be absorbed.",
+        "Your %belly kneads on every fiber of %prey, softening them down into mush to fuel your next hunt.",
+        "Your %belly churns %prey down into a hot slush. You can feel the nutrients coursing through your digestive track with a series of long, wet glorps."
+    ],
+    "digest_messages_prey": [
+        "Your body succumbs to %pred's digestive system, which breaks you apart into soft slurry.",
+        "%pred's %belly lets out a lewd glorp as their muscles grind you into a warm pulp.",
+        "%pred's %belly lets out a rumble as it melts you into sludge.",
+        "%pred feels a soft gurgle as your body loses form in their %belly. You're nothing but a soft mass of churning slop now.",
+        "%pred's %belly begins gushing your remains through their system, adding some extra weight to %pred's thighs.",
+        "%pred's %belly begins gushing your remains through their system, adding some extra weight to %pred's rump.",
+        "%pred's %belly begins gushing your remains through their system, adding some extra weight to %pred's belly.",
+        "%pred's %belly groans as you fall apart into a thick soup. Your remains soon flow deeper into %pred's body to be absorbed.",
+        "%pred's %belly kneads on every fiber of your body, softening you down into mush to fuel their next hunt.",
+        "%pred's %belly churns you down into a hot slush. Your nutrient-rich remains course through their digestive track with a series of long, wet glorps."
+    ],
+    "absorb_messages_owner": [
+        "You feel %prey becoming part of you."
+    ],
+    "absorb_messages_prey": [
+        "You feel yourself becoming part of %pred's %belly!"
+    ],
+    "unabsorb_messages_owner": [
+        "You feel %prey reform into a recognizable state again."
+    ],
+    "unabsorb_messages_prey": [
+        "You are released from being part of %pred's %belly."
+    ],
+    "examine_messages": [
+        "They have something solid in their %belly!",
+        "It looks like they have something in their %belly!"
+    ],
+    "examine_messages_absorbed": [
+        "Their body looks somewhat larger than usual around the area of their %belly.",
+        "Their %belly looks larger than usual."
+    ],
+    "emotes_digest": [],
+    "emotes_hold": [],
+    "emotes_holdabsorbed": [],
+    "emotes_absorb": [],
+    "emotes_heal": [],
+    "emotes_drain": [],
+    "emotes_steal": [],
+    "emotes_egg": [],
+    "emotes_shrink": [],
+    "emotes_grow": [],
+    "emotes_unabsorb": [],
+    "digest_brute": 0.5,
+    "digest_burn": 0.5,
+    "digest_oxy": 0,
+    "digest_tox": 0,
+    "digest_clone": 0,
+    "can_taste": 0,
+    "is_feedable": 1,
+    "contaminates": 1,
+    "contamination_flavor": "Generic",
+    "contamination_color": "green",
+    "nutrition_percent": 100,
+    "bulge_size": 0.25,
+    "display_absorbed_examine": 0,
+    "save_digest_mode": 1,
+    "emote_active": 1,
+    "emote_time": 60,
+    "shrink_grow_size": 1,
+    "vorespawn_blacklist": 0,
+    "egg_type": "Egg",
+    "egg_name": null,
+    "egg_size": 0,
+    "selective_preference": "Digest",
+    "recycling": 0,
+    "storing_nutrition": 0,
+    "entrance_logs": 1,
+    "item_digest_logs": 0,
+    "eating_privacy_local": "default",
+    "private_struggle": 0,
+    "is_wet": 1,
+    "wet_loop": 1,
+    "fancy_vore": 0,
+    "vore_sound": "Gulp",
+    "release_sound": "Splatter",
+    "sound_volume": 100,
+    "noise_freq": 42500,
+    "affects_vore_sprites": 0,
+    "vore_sprite_flags": [
+        "Normal belly sprite"
+    ],
+    "count_absorbed_prey_for_sprite": 1,
+    "absorbed_multiplier": 1,
+    "count_liquid_for_sprite": 0,
+    "liquid_multiplier": 1,
+    "count_items_for_sprite": 0,
+    "item_multiplier": 1,
+    "health_impacts_size": 1,
+    "resist_triggers_animation": 1,
+    "size_factor_for_sprite": 1,
+    "belly_sprite_to_affect": "stomach",
+    "undergarment_chosen": "Underwear, bottom",
+    "undergarment_if_none": null,
+    "undergarment_color": "#808080",
+    "belly_fullscreen_color": "#823232",
+    "belly_fullscreen_color2": "#FFFFFF",
+    "belly_fullscreen_color3": "#823232",
+    "belly_fullscreen_color4": "#FFFFFF",
+    "belly_fullscreen_alpha": 255,
+    "colorization_enabled": 1,
+    "disable_hud": 0,
+    "belly_fullscreen": "",
+    "escapable": 0,
+    "escapechance": 0,
+    "escapechance_absorbed": 0,
+    "escapetime": 10,
+    "transferchance": 0,
+    "transferlocation": null,
+    "transferchance_secondary": 0,
+    "transferlocation_secondary": null,
+    "absorbchance": 0,
+    "digestchance": 0,
+    "autotransferchance": 0,
+    "autotransferwait": 1,
+    "autotransferlocation": null,
+    "autotransfer_enabled": 0,
+    "autotransferchance_secondary": 0,
+    "autotransferlocation_secondary": null,
+    "autotransfer_min_amount": 0,
+    "autotransfer_max_amount": 0,
+    "autotransfer_whitelist": [],
+    "autotransfer_blacklist": [
+        "Absorbed"
+    ],
+    "autotransfer_whitelist_items": [],
+    "autotransfer_blacklist_items": [],
+    "autotransfer_secondary_whitelist": [],
+    "autotransfer_secondary_blacklist": [
+        "Absorbed"
+    ],
+    "autotransfer_secondary_whitelist_items": [],
+    "autotransfer_secondary_blacklist_items": [],
+    "show_liquids": 0,
+    "reagentbellymode": 0,
+    "reagent_chosen": "Water",
+    "reagent_name": "water",
+    "reagent_transfer_verb": "injects",
+    "gen_time_display": "1 hour",
+    "custom_max_volume": 100,
+    "vorefootsteps_sounds": 0,
+    "liquid_overlay": 1,
+    "max_liquid_level": 100,
+    "reagent_toches": 1,
+    "mush_overlay": 0,
+    "mush_color": "#664330",
+    "mush_alpha": 255,
+    "max_mush": 500,
+    "min_mush": 0,
+    "item_mush_val": 0,
+    "custom_reagentcolor": null,
+    "custom_reagentalpha": null,
+    "metabolism_overlay": 0,
+    "metabolism_mush_ratio": 15,
+    "max_ingested": 500,
+    "custom_ingested_color": null,
+    "custom_ingested_alpha": 255,
+    "reagent_mode_flag_list": [],
+    "show_fullness_messages": 0,
+    "liquid_fullness1_messages": 0,
+    "liquid_fullness2_messages": 0,
+    "liquid_fullness3_messages": 0,
+    "liquid_fullness4_messages": 0,
+    "liquid_fullness5_messages": 0,
+    "fullness1_messages": [
+        "%pred's %belly looks empty"
+    ],
+    "fullness2_messages": [
+        "%pred's %belly looks filled"
+    ],
+    "fullness3_messages": [
+        "%pred's %belly looks like it's full of liquid"
+    ],
+    "fullness4_messages": [
+        "%pred's %belly is quite full!"
+    ],
+    "fullness5_messages": [
+        "%pred's %belly is completely filled to it's limit!"
+    ]
+}

@@ -374,16 +374,19 @@ class DescriptionsTab(QWidget):
         # Examine Messages Group
         self.examine_messages_groupbox = QGroupBox('Examine Messages')
         self.examine_messages_layout = QGridLayout(self.examine_messages_groupbox)
+        
+        self.examine_messages_layout.addWidget(QLabel('When full'), 0, 0, 1, 1)
+        self.examine_messages_layout.addWidget(QLabel('With absorbed victims'), 0, 1, 1, 1)
 
-        self.examine_messages_text = 'Examine Messages (When full)'
+        self.examine_messages_text = 'Examine Messages'
         self.examine_messages_btn = QPushButton(self.examine_messages_text, self)
         self.examine_messages_btn.clicked.connect(lambda: self.open_messages_window(self.examine_messages_text, self.examine_messages))
-        self.examine_messages_layout.addWidget(self.examine_messages_btn, 0, 0, 1, 1)
+        self.examine_messages_layout.addWidget(self.examine_messages_btn, 1, 0, 1, 1)
 
-        self.examine_messages_absorbed_text = 'Examine Messages (With absorbed victim)'
+        self.examine_messages_absorbed_text = 'Examine Messages'
         self.examine_messages_absorbed_btn = QPushButton(self.examine_messages_absorbed_text, self)
         self.examine_messages_absorbed_btn.clicked.connect(lambda: self.open_messages_window(self.examine_messages_absorbed_text, self.absorbed_examine_messages))
-        self.examine_messages_layout.addWidget(self.examine_messages_absorbed_btn, 0, 1, 1, 1)
+        self.examine_messages_layout.addWidget(self.examine_messages_absorbed_btn, 1, 1, 1, 1)
 
         self.layout.addWidget(self.examine_messages_groupbox)
         
@@ -391,116 +394,123 @@ class DescriptionsTab(QWidget):
         self.struggle_messages_groupbox = QGroupBox('Struggle Messages')
         self.struggle_messages_layout = QGridLayout(self.struggle_messages_groupbox)
         
-        self.struggle_messages_outside_text = 'Struggle Messages (Outside)'
+        self.struggle_messages_layout.addWidget(QLabel('Outside'), 0, 0, 1, 1)
+        self.struggle_messages_layout.addWidget(QLabel('Inside'), 0, 1, 1, 1)
+        
+        self.struggle_messages_outside_text = 'Struggle Messages'
         self.struggle_messages_outside_btn = QPushButton(self.struggle_messages_outside_text, self)
         self.struggle_messages_outside_btn.clicked.connect(lambda: self.open_messages_window(self.struggle_messages_outside_text, self.struggle_messages_outside))
-        self.struggle_messages_layout.addWidget(self.struggle_messages_outside_btn, 0, 0, 1, 1)
+        self.struggle_messages_layout.addWidget(self.struggle_messages_outside_btn, 1, 0, 1, 1)
         
-        self.struggle_messages_inside_text = 'Struggle Messages (Inside)'
+        self.struggle_messages_inside_text = 'Struggle Messages'
         self.struggle_messages_inside_btn = QPushButton(self.struggle_messages_inside_text, self)
         self.struggle_messages_inside_btn.clicked.connect(lambda: self.open_messages_window(self.struggle_messages_inside_text, self.struggle_messages_inside))
-        self.struggle_messages_layout.addWidget(self.struggle_messages_inside_btn, 0, 1, 1, 1)
+        self.struggle_messages_layout.addWidget(self.struggle_messages_inside_btn, 1, 1, 1, 1)
         
-        self.struggle_messages_absorbed_outside_text = 'Absorbed Struggle Messages (Outside)'
+        self.struggle_messages_absorbed_outside_text = 'Absorbed Struggle Messages'
         self.struggle_messages_absorbed_outside_btn = QPushButton(self.struggle_messages_absorbed_outside_text, self)
         self.struggle_messages_absorbed_outside_btn.clicked.connect(lambda: self.open_messages_window(self.struggle_messages_absorbed_outside_text, self.struggle_messages_outside))
-        self.struggle_messages_layout.addWidget(self.struggle_messages_absorbed_outside_btn, 1, 0, 1, 1)
+        self.struggle_messages_layout.addWidget(self.struggle_messages_absorbed_outside_btn, 2, 0, 1, 1)
         
-        self.struggle_messages_absorbed_inside_text = 'Absorbed Struggle Messages (Inside)'
+        self.struggle_messages_absorbed_inside_text = 'Absorbed Struggle Messages'
         self.struggle_messages_absorbed_inside_btn = QPushButton(self.struggle_messages_absorbed_inside_text, self)
         self.struggle_messages_absorbed_inside_btn.clicked.connect(lambda: self.open_messages_window(self.struggle_messages_absorbed_inside_text, self.struggle_messages_inside))
-        self.struggle_messages_layout.addWidget(self.struggle_messages_absorbed_inside_btn, 1, 1, 1, 1)
+        self.struggle_messages_layout.addWidget(self.struggle_messages_absorbed_inside_btn, 2, 1, 1, 1)
 
         self.layout.addWidget(self.struggle_messages_groupbox)
         
         # Escape Messages Group
         self.escape_messages_groupbox = QGroupBox('Escape Messages')
         self.escape_messages_layout = QGridLayout(self.escape_messages_groupbox)
+        
+        self.escape_messages_layout.addWidget(QLabel('To prey'), 0, 0, 1, 1)
+        self.escape_messages_layout.addWidget(QLabel('To you'), 0, 1, 1, 1)
+        self.escape_messages_layout.addWidget(QLabel('Outside'), 0, 2, 1, 1)
 
-        self.escape_attempt_messages_prey_text = 'Escape Attempt Messages (To prey)'
+        self.escape_attempt_messages_prey_text = 'Escape Attempt'
         self.escape_attempt_messages_prey_btn = QPushButton(self.escape_attempt_messages_prey_text, self)
         self.escape_attempt_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.escape_attempt_messages_prey_text, self.escape_attempt_messages_prey))
-        self.escape_messages_layout.addWidget(self.escape_attempt_messages_prey_btn, 0, 0, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_attempt_messages_prey_btn, 1, 0, 1, 1)
         
-        self.escape_attempt_messages_owner_text = 'Escape Attempt Messages (To you)'
+        self.escape_attempt_messages_owner_text = 'Escape Attempt Messages'
         self.escape_attempt_messages_owner_btn = QPushButton(self.escape_attempt_messages_owner_text, self)
         self.escape_attempt_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.escape_attempt_messages_owner_text, self.escape_attempt_messages_owner))
-        self.escape_messages_layout.addWidget(self.escape_attempt_messages_owner_btn, 0, 1, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_attempt_messages_owner_btn, 1, 1, 1, 1)
         
-        self.escape_messages_prey_text = 'Escape Messages (To prey)'
+        self.escape_messages_prey_text = 'Escape Messages'
         self.escape_messages_prey_btn = QPushButton(self.escape_messages_prey_text, self)
         self.escape_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.escape_messages_prey_text, self.escape_messages_prey))
-        self.escape_messages_layout.addWidget(self.escape_messages_prey_btn, 1, 0, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_messages_prey_btn, 2, 0, 1, 1)
 
-        self.escape_messages_owner_text = 'Escape Messages (To you)'
+        self.escape_messages_owner_text = 'Escape Messages'
         self.escape_messages_owner_btn = QPushButton(self.escape_messages_owner_text, self)
         self.escape_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.escape_messages_owner_text, self.escape_messages_owner))
-        self.escape_messages_layout.addWidget(self.escape_messages_owner_btn, 1, 1, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_messages_owner_btn, 2, 1, 1, 1)
         
-        self.escape_messages_outside_text = "Escape Messages (Outside)"
+        self.escape_messages_outside_text = "Escape Messages"
         self.escape_messages_outside_btn = QPushButton(self.escape_messages_outside_text, self)
         self.escape_messages_outside_btn.clicked.connect(lambda: self.open_messages_window(self.escape_messages_outside_text, self.escape_messages_outside))
-        self.escape_messages_layout.addWidget(self.escape_messages_outside_btn, 1, 2, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_messages_outside_btn, 2, 2, 1, 1)
         
-        self.escape_item_messages_prey_text = 'Escape Item Messages (To prey)'
+        self.escape_item_messages_prey_text = 'Escape Item Messages'
         self.escape_item_messages_prey_btn = QPushButton(self.escape_item_messages_prey_text, self)
         self.escape_item_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.escape_item_messages_prey_text, self.escape_item_messages_prey))
-        self.escape_messages_layout.addWidget(self.escape_item_messages_prey_btn, 2, 0, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_item_messages_prey_btn, 3, 0, 1, 1)
         
-        self.escape_item_messages_owner_text = 'Escape Item Messages (To you)'
+        self.escape_item_messages_owner_text = 'Escape Item Messages'
         self.escape_item_messages_owner_btn = QPushButton(self.escape_item_messages_owner_text, self)
         self.escape_item_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.escape_item_messages_owner_text, self.escape_item_messages_owner))
-        self.escape_messages_layout.addWidget(self.escape_item_messages_owner_btn, 2, 1, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_item_messages_owner_btn, 3, 1, 1, 1)
         
-        self.escape_item_messages_outside_text = 'Escape Item Messages (Outside)'
+        self.escape_item_messages_outside_text = 'Escape Item Messages'
         self.escape_item_messages_outside_btn = QPushButton(self.escape_item_messages_outside_text, self)
         self.escape_item_messages_outside_btn.clicked.connect(lambda: self.open_messages_window(self.escape_item_messages_outside_text, self.escape_item_messages_outside))
-        self.escape_messages_layout.addWidget(self.escape_item_messages_outside_btn, 2, 2, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_item_messages_outside_btn, 3, 2, 1, 1)
         
-        self.escape_fail_messages_prey_text = 'Escape Fail Messages (To prey)'
+        self.escape_fail_messages_prey_text = 'Escape Fail Messages'
         self.escape_fail_messages_prey_btn = QPushButton(self.escape_fail_messages_prey_text, self)
         self.escape_fail_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.escape_fail_messages_prey_text, self.escape_fail_messages_prey))
-        self.escape_messages_layout.addWidget(self.escape_fail_messages_prey_btn, 3, 0, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_fail_messages_prey_btn, 4, 0, 1, 1)
         
-        self.escape_fail_messages_owner_text = 'Escape Fail Messages (To you)'
+        self.escape_fail_messages_owner_text = 'Escape Fail Messages'
         self.escape_fail_messages_owner_btn = QPushButton(self.escape_fail_messages_owner_text, self)
         self.escape_fail_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.escape_fail_messages_owner_text, self.escape_fail_messages_owner))
-        self.escape_messages_layout.addWidget(self.escape_fail_messages_owner_btn, 3, 1, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_fail_messages_owner_btn, 4, 1, 1, 1)
         
-        self.escape_attempt_absorbed_messages_prey_text = 'Absorbed Escape Attempt Messages (To prey)'
+        self.escape_attempt_absorbed_messages_prey_text = 'Absorbed Escape Attempt Messages'
         self.escape_attempt_absorbed_messages_prey_btn = QPushButton(self.escape_attempt_absorbed_messages_prey_text, self)
         self.escape_attempt_absorbed_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.escape_attempt_absorbed_messages_prey_text, self.escape_attempt_absorbed_messages_prey))
-        self.escape_messages_layout.addWidget(self.escape_attempt_absorbed_messages_prey_btn, 4, 0, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_attempt_absorbed_messages_prey_btn, 5, 0, 1, 1)
         
-        self.escape_attempt_absorbed_messages_owner_text = 'Absorbed Escape Attempt Messages (To you)'
+        self.escape_attempt_absorbed_messages_owner_text = 'Absorbed Escape Attempt Messages'
         self.escape_attempt_absorbed_messages_owner_btn = QPushButton(self.escape_attempt_absorbed_messages_owner_text, self)
         self.escape_attempt_absorbed_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.escape_attempt_absorbed_messages_owner_text, self.escape_attempt_absorbed_messages_owner))
-        self.escape_messages_layout.addWidget(self.escape_attempt_absorbed_messages_owner_btn, 4, 1, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_attempt_absorbed_messages_owner_btn, 5, 1, 1, 1)
         
-        self.escape_absorbed_messages_prey_text = 'Absorbed Attempt Messages (To prey)'
+        self.escape_absorbed_messages_prey_text = 'Absorbed Attempt Messages'
         self.escape_absorbed_messages_prey_btn = QPushButton( self.escape_absorbed_messages_prey_text, self)
         self.escape_absorbed_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.escape_absorbed_messages_prey_text, self.escape_absorbed_messages_prey))
-        self.escape_messages_layout.addWidget(self.escape_absorbed_messages_prey_btn, 5, 0, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_absorbed_messages_prey_btn, 6, 0, 1, 1)
         
-        self.escape_absorbed_messages_owner_text = 'Absorbed Attempt Messages (To you)'
+        self.escape_absorbed_messages_owner_text = 'Absorbed Attempt Messages'
         self.escape_absorbed_messages_owner_btn = QPushButton( self.escape_absorbed_messages_owner_text, self)
         self.escape_absorbed_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.escape_absorbed_messages_owner_text, self.escape_absorbed_messages_owner))
-        self.escape_messages_layout.addWidget(self.escape_absorbed_messages_owner_btn, 5, 1, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_absorbed_messages_owner_btn, 6, 1, 1, 1)
         
-        self.escape_absorbed_messages_outside_text = 'Absorbed Escape Attempt Messages (Outside)'
+        self.escape_absorbed_messages_outside_text = 'Absorbed Escape Attempt Messages'
         self.escape_absorbed_messages_outside_btn = QPushButton(self.escape_absorbed_messages_outside_text, self)
         self.escape_absorbed_messages_outside_btn.clicked.connect(lambda: self.open_messages_window(self.escape_absorbed_messages_outside_text, self.escape_absorbed_messages_outside))
-        self.escape_messages_layout.addWidget(self.escape_absorbed_messages_outside_btn, 5, 2, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_absorbed_messages_outside_btn, 6, 2, 1, 1)
         
-        self.escape_fail_absorbed_messages_prey_text = 'Absorbed Escape Fail Messages (To prey)'
+        self.escape_fail_absorbed_messages_prey_text = 'Absorbed Escape Fail Messages'
         self.escape_fail_absorbed_messages_prey_btn = QPushButton(self.escape_fail_absorbed_messages_prey_text, self)
         self.escape_fail_absorbed_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.escape_fail_absorbed_messages_prey_text, self.escape_fail_absorbed_messages_prey))
-        self.escape_messages_layout.addWidget(self.escape_fail_absorbed_messages_prey_btn, 6, 0, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_fail_absorbed_messages_prey_btn, 7, 0, 1, 1)
         
-        self.escape_fail_absorbed_messages_owner_text = 'Absorbed Escape Fail Messages (To you)'
+        self.escape_fail_absorbed_messages_owner_text = 'Absorbed Escape Fail Messages'
         self.escape_fail_absorbed_messages_owner_btn = QPushButton(self.escape_fail_absorbed_messages_owner_text, self)
         self.escape_fail_absorbed_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.escape_fail_absorbed_messages_owner_text, self.escape_fail_absorbed_messages_owner))
-        self.escape_messages_layout.addWidget(self.escape_fail_absorbed_messages_owner_btn, 6, 1, 1, 1)
+        self.escape_messages_layout.addWidget(self.escape_fail_absorbed_messages_owner_btn, 7, 1, 1, 1)
         
         self.layout.addWidget(self.escape_messages_groupbox)
         
@@ -510,46 +520,49 @@ class DescriptionsTab(QWidget):
         # Transfer Messages Group
         self.transfer_messages_groupbox = QGroupBox('Transfer Messages')
         self.transfer_messages_layout = QGridLayout(self.transfer_messages_groupbox)
+        
+        self.transfer_messages_layout.addWidget(QLabel('To prey'), 0, 0, 1, 1)
+        self.transfer_messages_layout.addWidget(QLabel('To you'), 0, 1, 1, 1)
 
-        self.primary_transfer_messages_prey_text = 'Primary Transfer Message (To prey)'
+        self.primary_transfer_messages_prey_text = 'Primary Transfer Message'
         self.primary_transfer_messages_prey_btn = QPushButton(self.primary_transfer_messages_prey_text, self)
         self.primary_transfer_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.primary_transfer_messages_prey_text, self.primary_transfer_messages_prey))
-        self.transfer_messages_layout.addWidget(self.primary_transfer_messages_prey_btn, 0, 0, 1, 1)
+        self.transfer_messages_layout.addWidget(self.primary_transfer_messages_prey_btn, 1, 0, 1, 1)
         
-        self.primary_transfer_messages_owner_text = 'Primary Transfer Message (To you)'
+        self.primary_transfer_messages_owner_text = 'Primary Transfer Message'
         self.primary_transfer_messages_owner_btn = QPushButton(self.primary_transfer_messages_owner_text, self)
         self.primary_transfer_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.primary_transfer_messages_owner_text, self.primary_transfer_messages_owner))
-        self.transfer_messages_layout.addWidget(self.primary_transfer_messages_owner_btn, 0, 1, 1, 1)
+        self.transfer_messages_layout.addWidget(self.primary_transfer_messages_owner_btn, 1, 1, 1, 1)
         
-        self.secondary_transfer_messages_prey_text = 'Secondary Transfer Message (To prey)'
+        self.secondary_transfer_messages_prey_text = 'Secondary Transfer Message'
         self.secondary_transfer_messages_prey_btn = QPushButton(self.secondary_transfer_messages_prey_text, self)
         self.secondary_transfer_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.secondary_transfer_messages_prey_text, self.secondary_transfer_messages_prey))
-        self.transfer_messages_layout.addWidget(self.secondary_transfer_messages_prey_btn, 1, 0, 1, 1)
+        self.transfer_messages_layout.addWidget(self.secondary_transfer_messages_prey_btn, 2, 0, 1, 1)
         
-        self.secondary_transfer_messages_owner_text = 'Secondary Transfer Message (To you)'
+        self.secondary_transfer_messages_owner_text = 'Secondary Transfer Message'
         self.secondary_transfer_messages_owner_btn = QPushButton(self.secondary_transfer_messages_owner_text, self)
         self.secondary_transfer_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.secondary_transfer_messages_owner_text, self.secondary_transfer_messages_owner))
-        self.transfer_messages_layout.addWidget(self.secondary_transfer_messages_owner_btn, 1, 1, 1, 1)
+        self.transfer_messages_layout.addWidget(self.secondary_transfer_messages_owner_btn, 2, 1, 1, 1)
         
-        self.primary_autotransfer_messages_prey_text = 'Primary Auto-Transfer Message (To prey)'
+        self.primary_autotransfer_messages_prey_text = 'Primary Auto-Transfer Message'
         self.primary_autotransfer_messages_prey_btn = QPushButton(self.primary_autotransfer_messages_prey_text, self)
         self.primary_autotransfer_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.primary_autotransfer_messages_prey_text, self.primary_autotransfer_messages_prey))
-        self.transfer_messages_layout.addWidget(self.primary_autotransfer_messages_prey_btn, 2, 0, 1, 1)
+        self.transfer_messages_layout.addWidget(self.primary_autotransfer_messages_prey_btn, 3, 0, 1, 1)
         
-        self.primary_autotransfer_messages_owner_text = 'Primary Auto-Transfer Message (To you)'
+        self.primary_autotransfer_messages_owner_text = 'Primary Auto-Transfer Message'
         self.primary_autotransfer_messages_owner_btn = QPushButton(self.primary_autotransfer_messages_owner_text, self)
         self.primary_autotransfer_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.primary_autotransfer_messages_owner_text, self.primary_autotransfer_messages_owner))
-        self.transfer_messages_layout.addWidget(self.primary_autotransfer_messages_owner_btn, 2, 1, 1, 1)
+        self.transfer_messages_layout.addWidget(self.primary_autotransfer_messages_owner_btn, 3, 1, 1, 1)
         
-        self.secondary_autotransfer_messages_prey_text = 'Secondary Auto-Transfer Message (To prey)'
+        self.secondary_autotransfer_messages_prey_text = 'Secondary Auto-Transfer Message'
         self.secondary_autotransfer_messages_prey_btn = QPushButton(self.secondary_autotransfer_messages_prey_text, self)
         self.secondary_autotransfer_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.secondary_autotransfer_messages_prey_text, self.secondary_autotransfer_messages_prey))
-        self.transfer_messages_layout.addWidget(self.secondary_autotransfer_messages_prey_btn, 3, 0, 1, 1)
+        self.transfer_messages_layout.addWidget(self.secondary_autotransfer_messages_prey_btn, 4, 0, 1, 1)
         
-        self.secondary_autotransfer_messages_owner_text = 'Secondary Auto-Transfer Message (To you)'
+        self.secondary_autotransfer_messages_owner_text = 'Secondary Auto-Transfer Message'
         self.secondary_autotransfer_messages_owner_btn = QPushButton(self.secondary_autotransfer_messages_owner_text, self)
         self.secondary_autotransfer_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.secondary_autotransfer_messages_owner_text, self.secondary_autotransfer_messages_owner))
-        self.transfer_messages_layout.addWidget(self.secondary_autotransfer_messages_owner_btn, 3, 1, 1, 1)
+        self.transfer_messages_layout.addWidget(self.secondary_autotransfer_messages_owner_btn, 4, 1, 1, 1)
         
         self.additional_options_layout.addWidget(self.transfer_messages_groupbox)
         
@@ -557,25 +570,28 @@ class DescriptionsTab(QWidget):
         self.interaction_messages_groupbox = QGroupBox('Interaction Chance Messages')
         self.interaction_messages_layout = QGridLayout(self.interaction_messages_groupbox)
         
-        self.digest_chance_messages_prey_text = 'Interaction Chance Digest Message (To prey)'
+        self.interaction_messages_layout.addWidget(QLabel('To prey'), 0, 0, 1, 1)
+        self.interaction_messages_layout.addWidget(QLabel('To you'), 0, 1, 1, 1)
+        
+        self.digest_chance_messages_prey_text = 'Interaction Chance Digest Message'
         self.digest_chance_messages_prey_btn = QPushButton(self.digest_chance_messages_prey_text, self)
         self.digest_chance_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.digest_chance_messages_prey_text, self.digest_chance_messages_prey))
-        self.interaction_messages_layout.addWidget(self.digest_chance_messages_prey_btn, 0, 0, 1, 1)
+        self.interaction_messages_layout.addWidget(self.digest_chance_messages_prey_btn, 1, 0, 1, 1)
         
-        self.digest_chance_messages_owner_text = 'Interaction Chance Digest Message (To you)'
+        self.digest_chance_messages_owner_text = 'Interaction Chance Digest Message'
         self.digest_chance_messages_owner_btn = QPushButton(self.digest_chance_messages_owner_text, self)
         self.digest_chance_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.digest_chance_messages_owner_text, self.digest_chance_messages_owner))
-        self.interaction_messages_layout.addWidget(self.digest_chance_messages_owner_btn, 0, 1, 1, 1)
+        self.interaction_messages_layout.addWidget(self.digest_chance_messages_owner_btn, 1, 1, 1, 1)
         
-        self.absorb_chance_messages_prey_text = 'Interaction Chance Absorb Message (To prey)'
+        self.absorb_chance_messages_prey_text = 'Interaction Chance Absorb Message'
         self.absorb_chance_messages_prey_btn = QPushButton(self.absorb_chance_messages_prey_text, self)
         self.absorb_chance_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.absorb_chance_messages_prey_text, self.absorb_chance_messages_prey))
-        self.interaction_messages_layout.addWidget(self.absorb_chance_messages_prey_btn, 1, 0, 1, 1)
+        self.interaction_messages_layout.addWidget(self.absorb_chance_messages_prey_btn, 2, 0, 1, 1)
         
-        self.absorb_chance_messages_owner_text = 'Interaction Chance Absorb Message (To you)'
+        self.absorb_chance_messages_owner_text = 'Interaction Chance Absorb Message'
         self.absorb_chance_messages_owner_btn = QPushButton(self.absorb_chance_messages_owner_text, self)
         self.absorb_chance_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.absorb_chance_messages_owner_text, self.absorb_chance_messages_owner))
-        self.interaction_messages_layout.addWidget(self.absorb_chance_messages_owner_btn, 1, 1, 1, 1)
+        self.interaction_messages_layout.addWidget(self.absorb_chance_messages_owner_btn, 2, 1, 1, 1)
         
         self.additional_options_layout.addWidget(self.interaction_messages_groupbox)
         
@@ -583,35 +599,38 @@ class DescriptionsTab(QWidget):
         self.bellymode_messages_groupbox = QGroupBox('Bellymode Messages')
         self.bellymode_messages_layout = QGridLayout(self.bellymode_messages_groupbox)
         
-        self.digest_messages_prey_text = 'Digest Message (To prey)'
+        self.bellymode_messages_layout.addWidget(QLabel('To prey'), 0, 0, 1, 1)
+        self.bellymode_messages_layout.addWidget(QLabel('To you'), 0, 1, 1, 1)
+        
+        self.digest_messages_prey_text = 'Digest Message'
         self.digest_messages_prey_btn = QPushButton(self.digest_messages_prey_text, self)
         self.digest_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.digest_messages_prey_text, self.digest_messages_prey))
-        self.bellymode_messages_layout.addWidget(self.digest_messages_prey_btn, 0, 0, 1, 1)
+        self.bellymode_messages_layout.addWidget(self.digest_messages_prey_btn, 1, 0, 1, 1)
         
-        self.digest_messages_owner_text = 'Digest Message (To you)'
+        self.digest_messages_owner_text = 'Digest Message'
         self.digest_messages_owner_btn = QPushButton(self.digest_messages_owner_text, self)
         self.digest_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.digest_messages_owner_text, self.digest_messages_owner))
-        self.bellymode_messages_layout.addWidget(self.digest_messages_owner_btn, 0, 1, 1, 1)
+        self.bellymode_messages_layout.addWidget(self.digest_messages_owner_btn, 1, 1, 1, 1)
         
-        self.absorb_messages_prey_text = 'Absorb Message (To prey)'
+        self.absorb_messages_prey_text = 'Absorb Message'
         self.absorb_messages_prey_btn = QPushButton(self.absorb_messages_prey_text, self)
         self.absorb_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.absorb_messages_prey_text, self.absorb_messages_prey))
-        self.bellymode_messages_layout.addWidget(self.absorb_messages_prey_btn, 1, 0, 1, 1)
+        self.bellymode_messages_layout.addWidget(self.absorb_messages_prey_btn, 2, 0, 1, 1)
         
-        self.absorb_messages_owner_text = 'Absorb Message (To you)'
+        self.absorb_messages_owner_text = 'Absorb Message'
         self.absorb_messages_owner_btn = QPushButton(self.absorb_messages_owner_text, self)
         self.absorb_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.absorb_messages_owner_text, self.absorb_messages_owner))
-        self.bellymode_messages_layout.addWidget(self.absorb_messages_owner_btn, 1, 1, 1, 1)
+        self.bellymode_messages_layout.addWidget(self.absorb_messages_owner_btn, 2, 1, 1, 1)
         
-        self.unabsorb_messages_prey_text = 'Unabsorb Message (To prey)'
+        self.unabsorb_messages_prey_text = 'Unabsorb Message'
         self.unabsorb_messages_prey_btn = QPushButton(self.unabsorb_messages_prey_text, self)
         self.unabsorb_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.unabsorb_messages_prey_text, self.unabsorb_messages_prey))
-        self.bellymode_messages_layout.addWidget(self.unabsorb_messages_prey_btn, 2, 0, 1, 1)
+        self.bellymode_messages_layout.addWidget(self.unabsorb_messages_prey_btn, 3, 0, 1, 1)
         
-        self.unabsorb_messages_owner_text = 'Unabsorb Message (To you)'
+        self.unabsorb_messages_owner_text = 'Unabsorb Message'
         self.unabsorb_messages_owner_btn = QPushButton(self.unabsorb_messages_owner_text, self)
         self.unabsorb_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.unabsorb_messages_owner_text, self.unabsorb_messages_owner))
-        self.bellymode_messages_layout.addWidget(self.unabsorb_messages_owner_btn, 2, 1, 1, 1)
+        self.bellymode_messages_layout.addWidget(self.unabsorb_messages_owner_btn, 3, 1, 1, 1)
         
         self.additional_options_layout.addWidget(self.bellymode_messages_groupbox)
         
@@ -619,57 +638,57 @@ class DescriptionsTab(QWidget):
         self.idle_messages_groupbox = QGroupBox('Idle Messages')
         self.idle_messages_layout = QGridLayout(self.idle_messages_groupbox)
         
-        self.emotes_hold_text = 'Idle Messages (Hold)'
+        self.emotes_hold_text = 'Hold'
         self.emotes_hold_btn = QPushButton(self.emotes_hold_text, self)
         self.emotes_hold_btn.clicked.connect(lambda: self.open_messages_window(self.emotes_hold_text, self.emotes_hold))
         self.idle_messages_layout.addWidget(self.emotes_hold_btn, 0, 0, 1, 1)
         
-        self.emotes_holdabsorbed_text = 'Idle Messages (Hold Absorbed)'
+        self.emotes_holdabsorbed_text = 'Hold Absorbed'
         self.emotes_holdabsorbed_btn = QPushButton(self.emotes_holdabsorbed_text, self)
         self.emotes_holdabsorbed_btn.clicked.connect(lambda: self.open_messages_window(self.emotes_holdabsorbed_text, self.emotes_holdabsorbed))
         self.idle_messages_layout.addWidget(self.emotes_holdabsorbed_btn, 0, 1, 1, 1)
         
-        self.emotes_digest_text = 'Idle Messages (Digest)'
+        self.emotes_digest_text = 'Digest'
         self.emotes_digest_btn = QPushButton(self.emotes_digest_text, self)
         self.emotes_digest_btn.clicked.connect(lambda: self.open_messages_window(self.emotes_digest_text, self.emotes_digest))
         self.idle_messages_layout.addWidget(self.emotes_digest_btn, 0, 2, 1, 1)
         
-        self.emotes_absorb_text = 'Idle Messages (Absorb)'
+        self.emotes_absorb_text = 'Absorb'
         self.emotes_absorb_btn = QPushButton(self.emotes_absorb_text, self)
         self.emotes_absorb_btn.clicked.connect(lambda: self.open_messages_window(self.emotes_absorb_text, self.emotes_absorb))
         self.idle_messages_layout.addWidget(self.emotes_absorb_btn, 1, 0, 1, 1)
         
-        self.emotes_unabsorb_text = 'Idle Messages (Unabsorb)'
+        self.emotes_unabsorb_text = 'Unabsorb'
         self.emotes_unabsorb_btn = QPushButton(self.emotes_unabsorb_text, self)
         self.emotes_unabsorb_btn.clicked.connect(lambda: self.open_messages_window(self.emotes_unabsorb_text, self.emotes_unabsorb))
         self.idle_messages_layout.addWidget(self.emotes_unabsorb_btn, 1, 1, 1, 1)
         
-        self.emotes_drain_text = 'Idle Messages (Drain)'
+        self.emotes_drain_text = 'Drain'
         self.emotes_drain_btn = QPushButton(self.emotes_drain_text, self)
         self.emotes_drain_btn.clicked.connect(lambda: self.open_messages_window(self.emotes_drain_text, self.emotes_drain))
         self.idle_messages_layout.addWidget(self.emotes_drain_btn, 1, 2, 1, 1)
         
-        self.emotes_heal_text = 'Idle Messages (Heal)'
+        self.emotes_heal_text = 'Heal'
         self.emotes_heal_btn = QPushButton(self.emotes_heal_text, self)
         self.emotes_heal_btn.clicked.connect(lambda: self.open_messages_window(self.emotes_heal_text, self.emotes_heal))
         self.idle_messages_layout.addWidget(self.emotes_heal_btn, 2, 0, 1, 1)
         
-        self.emotes_steal_text = 'Idle Messages (Size Steal)'
+        self.emotes_steal_text = 'Size Steal'
         self.emotes_steal_btn = QPushButton(self.emotes_steal_text, self)
         self.emotes_steal_btn.clicked.connect(lambda: self.open_messages_window(self.emotes_steal_text, self.emotes_steal))
         self.idle_messages_layout.addWidget(self.emotes_steal_btn, 2, 1, 1, 1)
         
-        self.emotes_shrink_text = 'Idle Messages (Shrink)'
+        self.emotes_shrink_text = 'Shrink'
         self.emotes_shrink_btn = QPushButton(self.emotes_shrink_text, self)
         self.emotes_shrink_btn.clicked.connect(lambda: self.open_messages_window(self.emotes_shrink_text, self.emotes_shrink))
         self.idle_messages_layout.addWidget(self.emotes_shrink_btn, 2, 2, 1, 1)
         
-        self.emotes_grow_text = 'Idle Messages (Grow)'
+        self.emotes_grow_text = 'Grow'
         self.emotes_grow_btn = QPushButton(self.emotes_grow_text, self)
         self.emotes_grow_btn.clicked.connect(lambda: self.open_messages_window(self.emotes_grow_text, self.emotes_grow))
         self.idle_messages_layout.addWidget(self.emotes_grow_btn, 3, 0, 1, 1)
         
-        self.emotes_egg_text = 'Idle Messages (Ecanse In Egg)'
+        self.emotes_egg_text = 'Ecanse In Egg'
         self.emotes_egg_btn = QPushButton(self.emotes_egg_text, self)
         self.emotes_egg_btn.clicked.connect(lambda: self.open_messages_window(self.emotes_egg_text, self.emotes_egg))
         self.idle_messages_layout.addWidget(self.emotes_egg_btn, 3, 1, 1, 1)
