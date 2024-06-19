@@ -2,62 +2,34 @@ name: Update Changelog
 
 on:
   pull_request:
-    types: [closed]
+    types: [opened, edited, synchronize]
 
 jobs:
-  update-changelog:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install auto-changelog
-        run: npm install -g auto-changelog
-
-      - name: Update Changelog
-        run: |
-          auto-changelog --token ${{ secrets.GITHUB_TOKEN }}
-          git add CHANGELOG.md
-          git commit -m "Update CHANGELOG.md" || echo "No changes to commit"
-          git push
-
-  check-changelog:
+  check-changelog-entry:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Check for Changelog Entry
-        id: changelog
-        run: |
-          CHANGELOG_DIFF=$(git diff --name-only origin/main CHANGELOG.md)
-          if [ -n "$CHANGELOG_DIFF" ]; then
-            echo "::set-output name=changelog_changed::true"
-          else
-            echo "::set-output name=changelog_changed::false"
-          fi
-
-  enforce-changelog-entry:
-    runs-on: ubuntu-latest
-    needs: check-changelog
-    if: needs.check-changelog.outputs.changelog_changed == 'true' && github.event_name == 'pull_request'
-    steps:
       - name: Check PR for Changelog Entry
         id: pr-changelog
         run: |
           PR_BODY=$(curl -sSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                     -H "Accept: application/vnd.github.v3+json" \
-                    ${{ github.api_url }}/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/comments \
-                    | jq '.[] | select(.body | test("## Changelog Entry"))')
+                    ${{ github.api_url }}/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/body \
+                    | jq -r '. | test("## Changelog Entry")')
 
-          if [ -z "$PR_BODY" ]; then
-            echo "Missing changelog entry in PR description."
-            exit 1
+          if [ "$PR_BODY" == "false" ]; then
+            echo "## Changelog Entry" >> $GITHUB_EVENT_PATH
+            echo "Added Changelog Entry placeholder." 
           fi
 
+      - name: Add Changelog Entry Comment
+        if: steps.pr-changelog.outputs.PR_BODY == 'false'
+        run: |
+          COMMENT_BODY="Please add a Changelog Entry describing your changes above. For example:\n\n## Changelog Entry\n- Added feature X.\n- Fixed bug Y."
+          curl -sSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Content-Type: application/json" \
+            -X POST -d "{\"body\": \"$COMMENT_BODY\"}" \
+            ${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments
