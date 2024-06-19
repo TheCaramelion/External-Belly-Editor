@@ -17,11 +17,11 @@ jobs:
           PR_BODY=$(curl -sSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                     -H "Accept: application/vnd.github.v3+json" \
                     ${{ github.api_url }}/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/body \
-                    | jq -r '. | test("## Changelog Entry")')
+                    | jq -r 'if .message then "" else . end | test("## Changelog Entry")')
 
           if [ "$PR_BODY" == "false" ]; then
             echo "## Changelog Entry" >> $GITHUB_EVENT_PATH
-            echo "Added Changelog Entry placeholder." 
+            echo "Added Changelog Entry placeholder."
           fi
 
       - name: Add Changelog Entry Comment
