@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QTextEdit, QLineEdit, QCheckBox, QScrollArea, QGroupBox, QPushButton, QGridLayout
 )
-from PyQt5.QtCore import Qt
 from .message_window import MessageWindow
 
 class ExamineWindow(QWidget):
@@ -9,9 +8,6 @@ class ExamineWindow(QWidget):
         super().__init__()
         self.setWindowTitle(title)
         self.setGeometry(100, 100, 400, 300)
-        
-        # Add widgets here if necessary
-
 
 class DescriptionsTab(QWidget):
     def __init__(self):
@@ -26,11 +22,6 @@ class DescriptionsTab(QWidget):
         self.scroll_area.setWidget(content_widget)
 
         self.layout = QVBoxLayout(content_widget)
-
-        # Toggle Switch
-        self.toggle_switch = QCheckBox('Show More', self)
-        self.toggle_switch.toggled.connect(self.toggle_options)
-        self.layout.addWidget(self.toggle_switch)
 
         # Main Description Section
         self.description_label = QLabel('Description:')
@@ -56,6 +47,11 @@ class DescriptionsTab(QWidget):
 
         self.vore_release_input = QLineEdit()
         self.layout.addWidget(self.vore_release_input)
+        
+        # Toggle Switch
+        self.toggle_switch = QCheckBox('Show All Messages', self)
+        self.toggle_switch.toggled.connect(self.toggle_options)
+        self.layout.addWidget(self.toggle_switch)
 
         # Examine Messages Group
         self.examine_messages_groupbox = QGroupBox('Examine Messages')
@@ -225,8 +221,6 @@ class DescriptionsTab(QWidget):
         
 
     def toggle_options(self, checked):
-        self.toggle_switch.setText('Show All Messages')
-
         for i in range(self.additional_options_layout.count()):
             widget = self.additional_options_layout.itemAt(i).widget()
             if widget:
@@ -312,20 +306,11 @@ class DescriptionsTab(QWidget):
             elif messages is self.absorbed_struggle_messages_inside:
                 self.absorbed_struggle_messages_inside = edited_messages
         self.examine_window.close()
-from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QLabel, QTextEdit, QLineEdit, QCheckBox, QScrollArea, QGroupBox, QPushButton, QGridLayout
-)
-from PyQt5.QtCore import Qt
-from .message_window import MessageWindow
-
 class ExamineWindow(QWidget):
     def __init__(self, title):
         super().__init__()
         self.setWindowTitle(title)
         self.setGeometry(100, 100, 400, 300)
-        
-        # Add widgets here if necessary
-
 
 class DescriptionsTab(QWidget):
     def __init__(self):
@@ -786,7 +771,7 @@ class DescriptionsTab(QWidget):
             if widget:
                 widget.setVisible(checked)
 
-    def set_description_data(self, belly_data):
+    def set_belly_data(self, belly_data):
         self.description_text_edit.setPlainText(belly_data.get('desc', ''))
         self.absorbed_desc_text_edit.setPlainText(belly_data.get('absorbed_desc', ''))
         self.vore_verb_input.setText(belly_data.get('vore_verb', ''))

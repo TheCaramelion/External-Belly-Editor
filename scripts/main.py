@@ -10,6 +10,7 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 from classes.controls_tab import ControlsTab
 from classes.descriptions_tab import DescriptionsTab
+from classes.options_tab import OptionsTab
 from classes.sounds_tab import SoundsTab
 from classes.visuals_tab import VisualsTab
 from classes.interactions_tab import InteractionsTab
@@ -89,10 +90,11 @@ class VRDBEditor(QMainWindow):
 
         # Left side: Belly List
         self.left_group_box = QGroupBox('Belly List', self)
+        self.left_group_box.setMaximumWidth(250)
         self.left_layout = QVBoxLayout(self.left_group_box)
         
-        self.minWidth = 100
-        self.maxWidth = 200
+        self.minWidth = 150
+        self.maxWidth = 250
 
         self.belly_list = QListWidget()
         self.belly_list.setMinimumWidth(self.minWidth)
@@ -148,6 +150,10 @@ class VRDBEditor(QMainWindow):
         # Descriptions tab
         self.descriptions_tab = DescriptionsTab()
         self.right_tab_widget.addTab(self.descriptions_tab, 'Descriptions')
+        
+        # Options tab
+        self.options_tab = OptionsTab()
+        self.right_tab_widget.addTab(self.options_tab, 'Options')
 
         # Sounds tab
         self.sounds_tab = SoundsTab()
@@ -283,7 +289,8 @@ class VRDBEditor(QMainWindow):
 
             # Update tabs with the selected belly data
             self.controls_tab.set_belly_data(belly_data)
-            self.descriptions_tab.set_description_data(belly_data)
+            self.descriptions_tab.set_belly_data(belly_data)
+            self.options_tab.set_belly_data(belly_data)
 
     def update_belly_data_from_tabs(self):
         selected_items = self.belly_list.selectedItems()
@@ -293,6 +300,7 @@ class VRDBEditor(QMainWindow):
 
             belly_data.update(self.controls_tab.get_belly_data())
             belly_data.update(self.descriptions_tab.get_description_data())
+            belly_data.update(self.options_tab.get_belly_data())
 
             for i, item in enumerate(self.belly_data_buffer):
                 if item.get('name') == belly_data.get('name'):
