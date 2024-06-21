@@ -61,6 +61,12 @@ class VRDBEditor(QMainWindow):
         save_action.triggered.connect(self.save_vrdb)
         file_menu.addAction(save_action)
 
+        save_as_action = QAction('Save &As...', self)
+        save_as_action.setShortcut('Ctrl+Shift+S')
+        save_as_action.setStatusTip('Save Bellies As...')
+        save_as_action.triggered.connect(self.save_as_vrdb)
+        file_menu.addAction(save_as_action)
+
         file_menu.addSeparator()
 
         exit_action = QAction('&Exit', self)
@@ -227,116 +233,95 @@ class VRDBEditor(QMainWindow):
                 with open(file_path, 'r', encoding='utf-8') as f:
                     self.current_file_path = file_path
                     self.current_file_data = json.load(f)
-                    self.belly_data_buffer = self.current_file_data.copy()
+                    self.belly_data_buffer = copy.deepcopy(self.current_file_data)
                     self.display_bellies(self.belly_data_buffer)
-                    
-                    if self.belly_list.count() > 0:
-                        self.belly_list.setCurrentRow(0)
-                        
                     self.enable_tabs(True)
                     self.new_belly_button.setEnabled(True)
+                    self.save_button.setEnabled(True)
                     self.delete_belly_button.setEnabled(True)
                     self.right_tab_widget.setCurrentIndex(1)
                     
             except Exception as e:
                 QMessageBox.critical(self, 'Error', f'Failed to load VRDB file:\n{str(e)}')
-                
-    def create_new_belly(self):
-        belly_name, ok = QInputDialog.getText(self, 'New Belly', 'Enter a name for the new belly')
-        
-        if ok and belly_name:
-            new_belly = copy.deepcopy(load_default_belly(default_belly_path))
-            new_belly['name'] = belly_name
-            
-            self.belly_data_buffer.append(new_belly)
-            self.refresh_belly_list()
-            
-            self.belly_list.setCurrentRow(len(self.belly_data_buffer)-1)
-
-    def confirm_delete_belly(self):
-        selected_items = self.belly_list.selectedItems()
-        if selected_items:
-            selected_item = selected_items[0]
-            reply = QMessageBox.question(self, 'Confirm Delete',
-                                        f"Are you sure you want to delete belly '{selected_item.belly_data['name']}'?",
-                                        QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-            if reply == QMessageBox.Yes:
-                self.delete_belly()
-
-    def delete_belly(self):
-        selected_items = self.belly_list.selectedItems()
-        if selected_items:
-            selected_item = selected_items[0]
-            self.belly_data_buffer.remove(selected_item.belly_data)
-            self.refresh_belly_list()
-
-    def display_bellies(self, data):
-        self.belly_list.clear()
-        for index, belly in enumerate(data):
-            belly_name = belly.get('name', f'Belly {index + 1}')
-            item = QListWidgetItem(belly_name)
-            item.belly_data = belly
-            self.belly_list.addItem(item)
-
-    def on_belly_selected(self):
-        selected_items = self.belly_list.selectedItems()
-        if selected_items:
-            selected_item = selected_items[0]
-            belly_data = selected_item.belly_data
-            self.json_scroll_area.setPlainText(json.dumps(belly_data, indent=4))
-            self.json_scroll_area.setReadOnly(False)
-            self.save_button.setEnabled(True)
-
-            # Update tabs with the selected belly data
-            self.controls_tab.set_belly_data(belly_data)
-            self.descriptions_tab.set_belly_data(belly_data)
-            self.options_tab.set_belly_data(belly_data)
-
-    def update_belly_data_from_tabs(self):
-        selected_items = self.belly_list.selectedItems()
-        if selected_items:
-            selected_item = selected_items[0]
-            belly_data = selected_item.belly_data
-
-            belly_data.update(self.controls_tab.get_belly_data())
-            belly_data.update(self.descriptions_tab.get_description_data())
-            belly_data.update(self.options_tab.get_belly_data())
-
-            for i, item in enumerate(self.belly_data_buffer):
-                if item.get('name') == belly_data.get('name'):
-                    self.belly_data_buffer[i] = belly_data
-                    break
-            else:
-                self.belly_data_buffer.append(belly_data)
-
-            self.json_scroll_area.setPlainText(json.dumps(belly_data, indent=4))
-            
-            self.refresh_belly_list()
-
-    def refresh_belly_list(self):
-        self.belly_list.clear()
-        for belly in self.belly_data_buffer:
-            belly_name = belly.get('name', 'Unnamed Belly')
-            item = QListWidgetItem(belly_name)
-            item.belly_data = belly
-            self.belly_list.addItem(item)
 
     def save_vrdb(self):
-        if not self.current_file_path:
-            QMessageBox.critical(self, 'Error', 'Current file path is not set')
-            return
+        if self.current_file_path:
+            try:
+                with open(self.current_file_path, 'w', encoding='utf-8') as f:
+                    json.dump(self.belly_data_buffer, f, ensure_ascii=False, indent=4)
+                    QMessageBox.information(self, 'Saved', 'Bellies saved successfully.')
+                    
+            except Exception as e:
+                QMessageBox.critical(self, 'Error', f'Failed to save VRDB file:\n{str(e)}')
+        
+        else:
+            QMessageBox.warning(self, 'Warning', 'No file opened yet. Please create or open a file first.')
 
-        self.update_belly_data_from_tabs() 
+    def save_as_vrdb(self):
+        file_dialog = QFileDialog(self)
+        file_dialog.setNameFilter("VRDB files (*.vrdb)")
+        file_dialog.setViewMode(QFileDialog.Detail)
+        file_path, _ = file_dialog.getSaveFileName(self, "Save VRDB File As", "", "VRDB files (*.vrdb)")
 
-        try:
-            with open(self.current_file_path, 'w', encoding='utf-8') as f:
-                json.dump(self.belly_data_buffer, f, indent=4)
-                QMessageBox.information(self, 'Success', 'Bellies saved successfully.')
-        except Exception as e:
-            QMessageBox.critical(self, 'Error', f'Failed to save bellies:\n{str(e)}')
-            
+        if file_path:
+            try:
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    json.dump(self.belly_data_buffer, f, ensure_ascii=False, indent=4)
+                    self.current_file_path = file_path
+                    self.title_label.setText(os.path.basename(file_path))
+                    QMessageBox.information(self, 'Saved As', 'Bellies saved successfully.')
+                    
+            except Exception as e:
+                QMessageBox.critical(self, 'Error', f'Failed to save VRDB file:\n{str(e)}')
+
+    def create_new_belly(self):
+        belly_name, ok = QInputDialog.getText(self, 'Create Belly', 'Enter Belly Name:')
+        if ok and belly_name:
+            new_belly = {
+                'name': belly_name,
+                'controls': {},
+                'descriptions': [],
+                'options': [],
+                'sounds': [],
+                'visuals': [],
+                'interactions': [],
+                'liquids': []
+            }
+            self.belly_data_buffer.append(new_belly)
+            self.display_bellies(self.belly_data_buffer)
+
+    def confirm_delete_belly(self):
+        current_row = self.belly_list.currentRow()
+        if current_row >= 0:
+            reply = QMessageBox.question(self, 'Confirm Delete',
+                                         'Are you sure you want to delete this belly?',
+                                         QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                del self.belly_data_buffer[current_row]
+                self.display_bellies(self.belly_data_buffer)
+
+    def display_bellies(self, bellies):
+        self.belly_list.clear()
+        for belly in bellies:
+            self.belly_list.addItem(belly['name'])
+
+    def on_belly_selected(self):
+        current_row = self.belly_list.currentRow()
+        if current_row >= 0 and current_row < len(self.belly_data_buffer):
+            belly_data = self.belly_data_buffer[current_row]
+            self.json_scroll_area.setPlainText(json.dumps(belly_data, indent=4))
+        else:
+            self.json_scroll_area.setPlainText("")  # Clear the JSON area if no belly is selected
+
+    def toggle_developer_mode(self, checked):
+        # Placeholder implementation for toggling developer mode
+        if checked:
+            QMessageBox.information(self, 'Developer Mode', 'Developer Mode Enabled')
+        else:
+            QMessageBox.information(self, 'Developer Mode', 'Developer Mode Disabled')
+
     def open_github_repo(self):
-        url = 'https://github.com/TheCaramelion/External-Belly-Editor'
+        url = "https://github.com/example/repository"
         QDesktopServices.openUrl(QUrl(url))
 
 if __name__ == '__main__':
