@@ -59,6 +59,12 @@ class VRDBEditor(QMainWindow):
         save_action.setStatusTip('Save Bellies')
         save_action.triggered.connect(self.save_vrdb)
         file_menu.addAction(save_action)
+        
+        save_as_action = QAction('Save &As...', self)
+        save_as_action.setShortcut('Ctrl+Shift+S')
+        save_as_action.setStatusTip('Save Bellies As...')
+        save_as_action.triggered.connect(self.save_as_vrdb)
+        file_menu.addAction(save_as_action)
 
         file_menu.addSeparator()
 
@@ -235,6 +241,23 @@ class VRDBEditor(QMainWindow):
             except Exception as e:
                 QMessageBox.critical(self, 'Error', f'Failed to load VRDB file:\n{str(e)}')
                 
+    def save_as_vrdb(self):
+        file_dialog = QFileDialog(self)
+        file_dialog.setNameFilter("VRDB files (*.vrdb)")
+        file_dialog.setViewMode(QFileDialog.Detail)
+        file_path, _ = file_dialog.getSaveFileName(self, "Save Bellies As" "", "VRDB files (*.vrdb)")
+                
+        if file_path:
+            try:
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    json.dump(self.belly_data_buffer, f, ensure_ascii=False, indent=4)
+                    self.current_file_path = file_path
+                    self.title_label.setText(os.path.basename(file_path))
+                    QMessageBox.information(self, 'Saved As', 'Bellies saved successfully.')
+                    
+            except Exception as e:
+                QMessageBox.critical(self, 'Error', f'Failed to save VRDB file:\n{str:(e)}')
+            
     def create_new_belly(self):
         belly_name, ok = QInputDialog.getText(self, 'New Belly', 'Enter a name for the new belly')
         
@@ -283,7 +306,9 @@ class VRDBEditor(QMainWindow):
 
             # Update tabs with the selected belly data
             self.controls_tab.set_belly_data(belly_data)
-            self.descriptions_tab.set_description_data(belly_data)
+            self.descriptions_tab.set_belly_data(belly_data)
+            self.sounds_tab.set_belly_data(belly_data)
+            self.visuals_tab.set_belly_data(belly_data)
 
     def update_belly_data_from_tabs(self):
         selected_items = self.belly_list.selectedItems()
@@ -293,6 +318,8 @@ class VRDBEditor(QMainWindow):
 
             belly_data.update(self.controls_tab.get_belly_data())
             belly_data.update(self.descriptions_tab.get_description_data())
+            belly_data.update(self.sounds_tab.get_belly_data())
+            belly_data.update(self.visuals_tab.get_belly_data())
 
             for i, item in enumerate(self.belly_data_buffer):
                 if item.get('name') == belly_data.get('name'):

@@ -1,5 +1,4 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QTextEdit, QPushButton, QHBoxLayout
-from PyQt5.QtCore import Qt
 
 class MessageWindow(QWidget):
     def __init__(self, title, messages):
