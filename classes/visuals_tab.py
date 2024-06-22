@@ -1,9 +1,13 @@
+import sys
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QCheckBox,
     QGroupBox, QGridLayout, QListWidget, QListWidgetItem,
-    QDoubleSpinBox
+    QDoubleSpinBox, QComboBox, QFrame, QPushButton, QColorDialog
 )
+from PyQt5.QtGui import QColor
+
+from constants.visuals_tab import BELLY_REGION_AFFECT, UNDERGARMENT_AFFECT, UNDERGARMENT_NONE
 
 class VisualsTab(QWidget):
     def __init__(self):
@@ -65,7 +69,7 @@ class VisualsTab(QWidget):
         self.liquid_multiplier_label = QLabel('Liquid Multiplier:')
         self.liquid_multiplier_spinbox = QDoubleSpinBox()
         self.liquid_multiplier_spinbox.setRange(0.1, 10)
-        self.absorbed_multiplier_spinbox.setSingleStep(0.1)
+        self.liquid_multiplier_spinbox.setSingleStep(0.1)
         self.layout_liquid_reagents.addWidget(self.liquid_multiplier_label, 1, 0)
         self.layout_liquid_reagents.addWidget(self.liquid_multiplier_spinbox, 1, 1)
 
@@ -83,7 +87,7 @@ class VisualsTab(QWidget):
         self.items_multiplier_label = QLabel('Items Multiplier:')
         self.items_multiplier_spinbox = QDoubleSpinBox()
         self.items_multiplier_spinbox.setRange(0.1, 10)
-        self.absorbed_multiplier_spinbox.setSingleStep(0.1)
+        self.items_multiplier_spinbox.setSingleStep(0.1)
         self.layout_count_items.addWidget(self.items_multiplier_label, 1, 0)
         self.layout_count_items.addWidget(self.items_multiplier_spinbox, 1, 1)
 
@@ -106,11 +110,52 @@ class VisualsTab(QWidget):
         self.vore_sprite_size_factor_label = QLabel('Vore Sprite Size Factor:')
         self.vore_sprite_size_factor_spinbox = QDoubleSpinBox()
         self.vore_sprite_size_factor_spinbox.setRange(0.1, 3)
-        self.absorbed_multiplier_spinbox.setSingleStep(0.1)
+        self.vore_sprite_size_factor_spinbox.setSingleStep(0.1)
         self.layout_prey_health.addWidget(self.vore_sprite_size_factor_label, 2, 0)
         self.layout_prey_health.addWidget(self.vore_sprite_size_factor_spinbox, 2, 1)
 
         self.vore_sprites_layout.addWidget(self.groupbox_prey_health, 2, 1)
+
+        # Group box for Belly Sprite
+        self.groupbox_belly_sprite = QGroupBox('Affecting sprites')
+        self.layout_belly_sprite = QGridLayout(self.groupbox_belly_sprite)
+
+        self.belly_sprite_size_factor_label = QLabel('Belly Sprite Size Factor:')
+        self.belly_sprite_size_factor_spinbox = QDoubleSpinBox()
+        self.belly_sprite_size_factor_spinbox.setRange(0.1, 3)
+        self.belly_sprite_size_factor_spinbox.setSingleStep(0.1)
+        self.layout_belly_sprite.addWidget(self.belly_sprite_size_factor_label, 0, 0)
+        self.layout_belly_sprite.addWidget(self.belly_sprite_size_factor_spinbox, 0, 1)
+
+        self.belly_sprite_affect_label = QLabel('Belly Sprite to affect:')
+        self.belly_sprite_affect_combobox = QComboBox()
+        self.belly_sprite_affect_combobox.addItems(BELLY_REGION_AFFECT)
+        self.layout_belly_sprite.addWidget(self.belly_sprite_affect_label, 1, 0)
+        self.layout_belly_sprite.addWidget(self.belly_sprite_affect_combobox, 1, 1)
+
+        self.belly_sprite_undergarment_type_label = QLabel('Undergarment type to affect:')
+        self.belly_sprite_undergarment_type_combobox = QComboBox()
+        self.belly_sprite_undergarment_type_combobox.addItems(UNDERGARMENT_AFFECT)
+        self.layout_belly_sprite.addWidget(self.belly_sprite_undergarment_type_label, 2, 0)
+        self.layout_belly_sprite.addWidget(self.belly_sprite_undergarment_type_combobox, 2, 1)
+
+        self.belly_sprite_undergarment_none_label = QLabel('Undergarment type if none equipped:')
+        self.belly_sprite_undergarment_none_combobox = QComboBox()
+        self.belly_sprite_undergarment_none_combobox.addItems(UNDERGARMENT_NONE)
+        self.layout_belly_sprite.addWidget(self.belly_sprite_undergarment_none_label, 3, 0)
+        self.layout_belly_sprite.addWidget(self.belly_sprite_undergarment_none_combobox, 3, 1)
+
+        self.belly_sprite_undergarment_colour_button = QPushButton('Choose colour')
+        self.belly_sprite_undergarment_colour_button.clicked.connect(self.choose_color)
+        self.layout_belly_sprite.addWidget(self.belly_sprite_undergarment_colour_button, 4, 0, 1, 2)
+
+        # Add the frame to display the chosen color
+        self.belly_sprite_undergarment_color_frame = QFrame()
+        self.belly_sprite_undergarment_color_frame.setFixedSize(30, 30)
+        self.belly_sprite_undergarment_color_frame.setStyleSheet("background-color: black;")
+        self.layout_belly_sprite.addWidget(self.belly_sprite_undergarment_color_frame, 4, 2)
+
+        self.vore_sprites_layout.addWidget(self.groupbox_belly_sprite, 3, 0, 1, 2) 
 
         # Add main vore sprites group box to main layout
         self.layout.addWidget(self.vore_sprites_groupbox)
@@ -123,28 +168,43 @@ class VisualsTab(QWidget):
 
         self.setLayout(self.layout)
 
+    def choose_color(self):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            hex_color = color.name()
+            self.set_color('belly_undergarment_color', hex_color)
+            return hex_color
+        return None
+
+    def set_color(self, frame_id, hex_color):
+        if frame_id == 'belly_undergarment_color':
+            self.belly_sprite_undergarment_color_frame.setStyleSheet(f"background-color: {hex_color};")
+
     def toggle_vore_sprites_settings(self, state):
         visible = state == Qt.Checked
         self.vore_sprites_groupbox.setVisible(visible)
 
     def set_belly_data(self, belly_data):
-        self.affect_vore_sprites_checkbox.setChecked(belly_data.get('affects_vore_sprites', False))
+        self.affect_vore_sprites_checkbox.setChecked(belly_data.get('affects_vore_sprites', ''))
 
         modes = belly_data.get('vore_sprite_flags', [])
         for index in range(self.vore_sprite_mode_listwidget.count()):
             item = self.vore_sprite_mode_listwidget.item(index)
             item.setCheckState(Qt.Checked if item.text() in modes else Qt.Unchecked)
 
-        self.affect_vore_sprites_checkbox.setChecked(belly_data.get('affects_vore_sprites'))
-        self.count_absorbed_prey_checkbox.setChecked(belly_data.get('count_absorbed_prey_for_sprite', False))
-        self.absorbed_multiplier_spinbox.setValue(belly_data.get('absorbed_multiplier', 1))
-        self.count_liquid_reagents_checkbox.setChecked(belly_data.get('count_liquid_for_sprite', False))
-        self.liquid_multiplier_spinbox.setValue(belly_data.get('liquid_multiplier', 1))
-        self.count_items_checkbox.setChecked(belly_data.get('count_items_for_sprite', False))
-        self.items_multiplier_spinbox.setValue(belly_data.get('items_multiplier', 1))
-        self.prey_health_checkbox.setChecked(belly_data.get('health_impacts_size', False))
-        self.animation_when_resist_checkbox.setChecked(belly_data.get('resist_triggers_animation', False))
-        self.vore_sprite_size_factor_spinbox.setValue(belly_data.get('size_factor_for_sprite', 1))
+        self.count_absorbed_prey_checkbox.setChecked(belly_data.get('count_absorbed_prey_for_sprite', ''))
+        self.absorbed_multiplier_spinbox.setValue(belly_data.get('absorbed_multiplier', ''))
+        self.count_liquid_reagents_checkbox.setChecked(belly_data.get('count_liquid_for_sprite', ''))
+        self.liquid_multiplier_spinbox.setValue(belly_data.get('liquid_multiplier', ''))
+        self.count_items_checkbox.setChecked(belly_data.get('count_items_for_sprite', ''))
+        self.items_multiplier_spinbox.setValue(belly_data.get('items_multiplier', 1.0))
+        self.prey_health_checkbox.setChecked(belly_data.get('health_impacts_size', ''))
+        self.animation_when_resist_checkbox.setChecked(belly_data.get('resist_triggers_animation', ''))
+        self.vore_sprite_size_factor_spinbox.setValue(belly_data.get('size_factor_for_sprite', ''))
+        self.belly_sprite_affect_combobox.setCurrentText(belly_data.get('belly_sprite_to_affect'))
+        self.belly_sprite_undergarment_type_combobox.setCurrentText(belly_data.get('undergarment_chosen'))
+        self.belly_sprite_undergarment_none_combobox.setCurrentText(belly_data.get('undergarment_if_none'))
+        
 
     def get_belly_data(self):
         modes = []
@@ -165,5 +225,8 @@ class VisualsTab(QWidget):
             'health_impacts_size': self.prey_health_checkbox.isChecked(),
             'resist_triggers_animation': self.animation_when_resist_checkbox.isChecked(),
             'size_factor_for_sprite': self.vore_sprite_size_factor_spinbox.value(),
+            'belly_sprite_to_affect': self.belly_sprite_affect_combobox.currentText(),
+            'undergarment_chosen': self.belly_sprite_undergarment_type_combobox.currentText(),
+            'undergarment_if_none': self.belly_sprite_undergarment_none_combobox.currentText()
         }
         return belly_data
