@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QLabel, QLineEdit, QComboBox, QCheckBox, QPushButton, QGroupBox, QHBoxLayout
+    QWidget, QVBoxLayout, QLabel, QLineEdit, QComboBox, QCheckBox, QGroupBox
 )
-from PyQt5.QtCore import Qt
 
 from constants.controls_options import MODE_ADDONS_OPTIONS, MODE_OPTIONS, ITEM_MODE_OPTIONS
 

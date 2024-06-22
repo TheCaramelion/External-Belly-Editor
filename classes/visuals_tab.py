@@ -1,8 +1,8 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QCheckBox,
-    QComboBox, QPushButton, QSpinBox, QHBoxLayout,
-    QGroupBox, QGridLayout, QListWidget, QListWidgetItem
+    QGroupBox, QGridLayout, QListWidget, QListWidgetItem,
+    QDoubleSpinBox
 )
 
 class VisualsTab(QWidget):
@@ -45,9 +45,9 @@ class VisualsTab(QWidget):
         self.layout_absorbed_prey.addWidget(self.count_absorbed_prey_checkbox, 0, 1)
 
         self.absorbed_multiplier_label = QLabel('Absorbed Multiplier:')
-        self.absorbed_multiplier_spinbox = QSpinBox()
-        self.absorbed_multiplier_spinbox.setRange(1, 10)
-        self.absorbed_multiplier_spinbox.setValue(1)
+        self.absorbed_multiplier_spinbox = QDoubleSpinBox()
+        self.absorbed_multiplier_spinbox.setRange(0.1, 3)
+        self.absorbed_multiplier_spinbox.setSingleStep(0.1)
         self.layout_absorbed_prey.addWidget(self.absorbed_multiplier_label, 1, 0)
         self.layout_absorbed_prey.addWidget(self.absorbed_multiplier_spinbox, 1, 1)
 
@@ -63,9 +63,9 @@ class VisualsTab(QWidget):
         self.layout_liquid_reagents.addWidget(self.count_liquid_reagents_checkbox, 0, 1)
 
         self.liquid_multiplier_label = QLabel('Liquid Multiplier:')
-        self.liquid_multiplier_spinbox = QSpinBox()
-        self.liquid_multiplier_spinbox.setRange(1, 10)
-        self.liquid_multiplier_spinbox.setValue(1)
+        self.liquid_multiplier_spinbox = QDoubleSpinBox()
+        self.liquid_multiplier_spinbox.setRange(0.1, 10)
+        self.absorbed_multiplier_spinbox.setSingleStep(0.1)
         self.layout_liquid_reagents.addWidget(self.liquid_multiplier_label, 1, 0)
         self.layout_liquid_reagents.addWidget(self.liquid_multiplier_spinbox, 1, 1)
 
@@ -81,16 +81,16 @@ class VisualsTab(QWidget):
         self.layout_count_items.addWidget(self.count_items_checkbox, 0, 1)
 
         self.items_multiplier_label = QLabel('Items Multiplier:')
-        self.items_multiplier_spinbox = QSpinBox()
-        self.items_multiplier_spinbox.setRange(1, 10)
-        self.items_multiplier_spinbox.setValue(1)
+        self.items_multiplier_spinbox = QDoubleSpinBox()
+        self.items_multiplier_spinbox.setRange(0.1, 10)
+        self.absorbed_multiplier_spinbox.setSingleStep(0.1)
         self.layout_count_items.addWidget(self.items_multiplier_label, 1, 0)
         self.layout_count_items.addWidget(self.items_multiplier_spinbox, 1, 1)
 
         self.vore_sprites_layout.addWidget(self.groupbox_count_items, 2, 0)
 
         # Group box for Prey Health, Animation When Resist, and Vore Sprite Size Factor
-        self.groupbox_prey_health = QGroupBox('Prey Health')
+        self.groupbox_prey_health = QGroupBox('Prey Related')
         self.layout_prey_health = QGridLayout(self.groupbox_prey_health)
 
         self.prey_health_label = QLabel('Prey health affects vore sprites:')
@@ -104,9 +104,9 @@ class VisualsTab(QWidget):
         self.layout_prey_health.addWidget(self.animation_when_resist_checkbox, 1, 1)
 
         self.vore_sprite_size_factor_label = QLabel('Vore Sprite Size Factor:')
-        self.vore_sprite_size_factor_spinbox = QSpinBox()
-        self.vore_sprite_size_factor_spinbox.setRange(1, 10)
-        self.vore_sprite_size_factor_spinbox.setValue(1)
+        self.vore_sprite_size_factor_spinbox = QDoubleSpinBox()
+        self.vore_sprite_size_factor_spinbox.setRange(0.1, 3)
+        self.absorbed_multiplier_spinbox.setSingleStep(0.1)
         self.layout_prey_health.addWidget(self.vore_sprite_size_factor_label, 2, 0)
         self.layout_prey_health.addWidget(self.vore_sprite_size_factor_spinbox, 2, 1)
 

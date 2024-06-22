@@ -472,12 +472,12 @@ class DescriptionsTab(QWidget):
         self.escape_attempt_absorbed_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.escape_attempt_absorbed_messages_owner_text, self.escape_attempt_absorbed_messages_owner))
         self.escape_messages_layout.addWidget(self.escape_attempt_absorbed_messages_owner_btn, 5, 1, 1, 1)
         
-        self.escape_absorbed_messages_prey_text = 'Absorbed Attempt Messages'
+        self.escape_absorbed_messages_prey_text = 'Absorbed Escape Attempt Messages'
         self.escape_absorbed_messages_prey_btn = QPushButton( self.escape_absorbed_messages_prey_text, self)
         self.escape_absorbed_messages_prey_btn.clicked.connect(lambda: self.open_messages_window(self.escape_absorbed_messages_prey_text, self.escape_absorbed_messages_prey))
         self.escape_messages_layout.addWidget(self.escape_absorbed_messages_prey_btn, 6, 0, 1, 1)
         
-        self.escape_absorbed_messages_owner_text = 'Absorbed Attempt Messages'
+        self.escape_absorbed_messages_owner_text = 'Absorbed Escape Attempt Messages'
         self.escape_absorbed_messages_owner_btn = QPushButton( self.escape_absorbed_messages_owner_text, self)
         self.escape_absorbed_messages_owner_btn.clicked.connect(lambda: self.open_messages_window(self.escape_absorbed_messages_owner_text, self.escape_absorbed_messages_owner))
         self.escape_messages_layout.addWidget(self.escape_absorbed_messages_owner_btn, 6, 1, 1, 1)
@@ -798,7 +798,6 @@ class DescriptionsTab(QWidget):
         self.escape_item_messages_outside = belly_data.get('escape_item_messages_outside', [])
         self.escape_attempt_absorbed_messages_owner = belly_data.get('escape_attempt_absorbed_messages_owner', [])
         self.escape_attempt_absorbed_messages_prey = belly_data.get('escape_attempt_absorbed_messages_prey', [])
-        self.escape_attempt_absorbed_messages_outside = belly_data.get('escape_attempt_absorbed_messages_outside', [])
         self.escape_fail_messages_owner = belly_data.get('escape_fail_messages_owner', [])
         self.escape_fail_messages_prey = belly_data.get('escape_fail_messages_prey', [])
         self.escape_fail_messages_outside = belly_data.get('escape_fail_messages_outside', [])
@@ -869,10 +868,8 @@ class DescriptionsTab(QWidget):
             'escape_item_messages_outside': self.escape_item_messages_outside,
             'escape_attempt_absorbed_messages_owner': self.escape_attempt_absorbed_messages_owner,
             'escape_attempt_absorbed_messages_prey': self.escape_attempt_absorbed_messages_prey,
-            'escape_attempt_absorbed_messages_outside': self.escape_attempt_absorbed_messages_outside,
             'escape_fail_messages_owner': self.escape_fail_messages_owner,
             'escape_fail_messages_prey': self.escape_fail_messages_prey,
-            'escape_fail_messages_outside': self.escape_fail_messages_outside,
             'escape_absorbed_messages_owner': self.escape_absorbed_messages_owner,
             'escape_absorbed_messages_prey': self.escape_absorbed_messages_prey,
             'escape_absorbed_messages_outside': self.escape_absorbed_messages_outside,

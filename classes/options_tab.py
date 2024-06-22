@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import(
-    QWidget, QVBoxLayout, QLabel, QGroupBox, QGridLayout, QTextEdit, QLineEdit,
+    QWidget, QLabel, QGroupBox, QGridLayout, QLineEdit,
     QDoubleSpinBox, QCheckBox, QComboBox
 )
 from constants.options_options import (

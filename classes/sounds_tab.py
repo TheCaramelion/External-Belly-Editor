@@ -75,7 +75,6 @@ class SoundsTab(QWidget):
         self.sound_volume_slider.valueChanged.connect(self.sync_volume_spinbox)
         self.sound_volume_spinbox = QSpinBox()
         self.sound_volume_spinbox.setRange(0, 100)
-        self.sound_volume_spinbox.setValue(100)
         self.sound_volume_spinbox.valueChanged.connect(self.sync_volume_slider)
         self.sound_volume_layout.addWidget(self.sound_volume_label)
         self.sound_volume_layout.addWidget(self.sound_volume_slider)
